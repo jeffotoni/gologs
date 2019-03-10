@@ -1,4 +1,5 @@
 deploy-local.sh
 deploy-docker.sh
 Makefile
-
+.env
+env
