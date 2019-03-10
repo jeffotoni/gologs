@@ -16,6 +16,7 @@ func InsertLog(jsonMsg string) bool {
 	if len(jsonMsg) <= 0 {
 		return false
 	}
+
 	var Db = pg.PostDb.Pgdb
 	// Db...
 	if interf := pg.Connect(); interf != nil {
@@ -36,7 +37,6 @@ func InsertLog(jsonMsg string) bool {
 	//data := time.Now().Format(cf.LayoutDate)
 	//hora := time.Now().Format(cf.LayoutHour)
 
-	// token para logar automaticamente na plataforma ARCHIVIOBRASIL.
 	insert := `INSERT INTO gologs(record)values($1)`
 	_, err := Db.Exec(insert, jsonMsg)
 

@@ -104,10 +104,6 @@ func (c *cache) loadStore(key interface{}, fc func() (interface{}, error)) (inte
 // conectando de forma segura usando goroutine
 func Connect() interface{} {
 
-	// neste projeto
-	// iremos trabalhar
-	// somente com
-	// um database
 	if dbPg := pool.get(DB_NAME); dbPg != nil {
 
 		// return objeto conexao
@@ -121,12 +117,10 @@ func Connect() interface{} {
 		DBINFO := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 			DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SSL)
 
-		// func para ser executada
-		// dentro do loadStore
-		// quando duas ou mais
-		// goroutine chegarem
-		// neste mesmo momento
-		// de fazer um Store
+		// func for execute
+		// in loadStore
+		// when two or more
+		// goroutine at moment
 		fn := func() (interface{}, error) {
 
 			once.Do(func() {
@@ -139,7 +133,7 @@ func Connect() interface{} {
 			}
 
 			if ok2 := PostDb.Pgdb.Ping(); ok2 != nil {
-				//log.Println("connect error...: ", ok2)
+				log.Println("connect error...: ", ok2)
 				return nil, err
 			}
 

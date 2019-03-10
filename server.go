@@ -6,7 +6,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"net/rpc"
@@ -58,14 +57,17 @@ func Consumer() {
 			time.Sleep(time.Second * 5)
 			j, okay := <-jobs
 			if okay {
-				fmt.Println("received job, process service: ", j)
-				repo.InsertLog(j)
+				if repo.InsertLog(j) {
+					log.Println("save postgres")
+				} else {
+
+					log.Println("received job, error processing service send postgres: \n", j)
+				}
 				// here send Postgres or ElasticSearch or SQS or S3.
 				// depending on the message sending email
-
 			} else {
 				// never
-				fmt.Println("received all jobs")
+				log.Println("received all jobs")
 				done <- true
 				return
 			}
@@ -91,7 +93,7 @@ func main() {
 		if conn, err := listener.Accept(); err != nil {
 			log.Fatal("accept error: " + err.Error())
 		} else {
-			log.Printf("New connection established rpc server\n")
+			log.Printf("New connection established in rpc server\n")
 			go server.ServeCodec(jsonrpc.NewServerCodec(conn))
 		}
 	}
