@@ -42,6 +42,7 @@ func InsertLog(jsonMsg string) bool {
 
 	if err != nil {
 		log.Println(err.Error())
+		//log.Println(jsonMsg)
 		return false
 	}
 

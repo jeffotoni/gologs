@@ -2,7 +2,7 @@
 // @jeffotoni
 // 2019-03-10
 
-// client.go
+// client-rpc.go
 package main
 
 import (

@@ -3,13 +3,10 @@
 // 2019-03-10
 
 // server.go
-package main
+package server
 
 import (
 	"log"
-	"net"
-	"net/rpc"
-	"net/rpc/jsonrpc"
 	"time"
 
 	"github.com/jeffotoni/gologs/repo"
@@ -18,26 +15,6 @@ import (
 var jobs = make(chan string)
 
 var done = make(chan bool)
-
-type Args struct {
-	Json string
-}
-
-type Receive struct{}
-
-func (t *Receive) Json(args *Args, reply *string) error {
-
-	if len(args.Json) <= 0 {
-		*reply = `{"status":"error", "msg":"json field is required"}`
-		return nil
-	}
-	//*reply = `{"status":"ok", "msg":"Receive json"}`
-	*reply = "ok"
-	// log.Println("Server Receive: ", args.Json)
-	// add msg
-	go Publish(args.Json)
-	return nil
-}
 
 func Publish(okay string) {
 	time.Sleep(time.Millisecond * 200)
@@ -73,28 +50,4 @@ func Consumer() {
 			}
 		}
 	}()
-}
-
-func main() {
-	re := new(Receive)
-	server := rpc.NewServer()
-	server.Register(re)
-	server.HandleHTTP(rpc.DefaultRPCPath, rpc.DefaultDebugPath)
-	listener, e := net.Listen("tcp", ":22334")
-	if e != nil {
-		log.Fatal("listen error:", e)
-	}
-
-	// exec
-	// service
-	Consumer()
-
-	for {
-		if conn, err := listener.Accept(); err != nil {
-			log.Fatal("accept error: " + err.Error())
-		} else {
-			log.Printf("New connection established in rpc server\n")
-			go server.ServeCodec(jsonrpc.NewServerCodec(conn))
-		}
-	}
 }
