@@ -18,6 +18,8 @@ func main() {
 
 	done := make(chan struct{})
 
+	println("Server Run...")
+
 	// Rpc open
 	go server.Rpc()
 

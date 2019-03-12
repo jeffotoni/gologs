@@ -18,6 +18,16 @@ import (
 
 var once sync.Once
 
+///////////////////////////////////////////////////
+// Table gologs                                  //
+// CREATE TABLE gologs (                         //
+//     id serial not null primary key,           //
+//     time Timestamptz not null default  now(), //
+//     record Jsonb not null                     //
+// );                                            //
+///////////////////////////////////////////////////
+
+///
 /////// DATA BASE
 var (
 	DB_NAME     = os.Getenv("DB_NAME")
@@ -58,6 +68,62 @@ var (
 var (
 	pool = &cache{}
 )
+
+func init() {
+	if len(os.Getenv("DB_PORT")) <= 0 {
+		DB_PORT = "5432"
+	}
+	if len(os.Getenv("DB_SSL")) <= 0 {
+		DB_SSL = "disable"
+	}
+	if len(os.Getenv("DB_SORCE")) <= 0 {
+		DB_SORCE = "postgres"
+	}
+
+	if len(os.Getenv("DB_NAME")) <= 0 {
+		fmt.Printf("\033[0;31m")
+		println(" Error, export DB_NAME is permited!")
+		fmt.Printf("\033[0;0m")
+		showEnvDb()
+		return
+	}
+
+	if len(os.Getenv("DB_HOST")) <= 0 {
+		fmt.Printf("\033[0;31m")
+		println(" Error, export DB_HOST is permited!")
+		fmt.Printf("\033[0;0m")
+		showEnvDb()
+		return
+	}
+
+	if len(os.Getenv("DB_USER")) <= 0 {
+		fmt.Printf("\033[0;31m")
+		println(" Error, export DB_USER is permited!")
+		fmt.Printf("\033[0;0m")
+		showEnvDb()
+		return
+	}
+
+	if len(os.Getenv("DB_PASSWORD")) <= 0 {
+		fmt.Printf("\033[0;31m")
+		println(" Error, export DB_PASSWORD is permited!")
+		println("\033[0m")
+		showEnvDb()
+		return
+	}
+}
+
+func showEnvDb() {
+	println(" Please set the environment variable for the postgres database!")
+	fmt.Printf("\033[0;33m")
+	println("   Info:")
+	println("    - DB_HOST=your-host")
+	println("    - DB_NAME=your-name")
+	println("    - DB_USER=your-user")
+	println("    - DB_PASSWORD=xxxxxx")
+	println("    - DB_PORT=5432")
+	println("\033[0m")
+}
 
 // put sync.Map
 func (c *cache) put(key, value interface{}) {
