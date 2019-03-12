@@ -42,7 +42,7 @@ func Consumer() {
 					log.Println("save postgres")
 
 					// rule critical
-					matched, err := regexp.MatchString("#critical", j)
+					matched, err := regexp.MatchString("#critical#", j)
 					if err != nil {
 						log.Println("Error regexp critical", err)
 					}
