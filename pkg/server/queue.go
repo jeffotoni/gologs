@@ -48,7 +48,7 @@ func Consumer() {
 					}
 
 					if matched {
-						notifyEmailDefault()
+						go notifyEmailDefault()
 					}
 
 				} else {
