@@ -45,10 +45,7 @@ func Rpc() {
 		return
 	}
 
-	// exec
-	// service
-	Consumer()
-
+	// to listen
 	for {
 		if conn, err := listener.Accept(); err != nil {
 			log.Println("accept error: " + err.Error())

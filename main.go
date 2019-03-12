@@ -24,6 +24,11 @@ func main() {
 	// Tcp open
 	go server.Tcp()
 
+	// Receives job
+	// from queue
+	// and executes
+	go server.Consumer()
+
 	var gracefulStop = make(chan os.Signal)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
 	signal.Notify(gracefulStop, syscall.SIGINT)
