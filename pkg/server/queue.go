@@ -6,9 +6,12 @@
 package server
 
 import (
+	"fmt"
 	"log"
+	"regexp"
 	"time"
 
+	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
 )
 
@@ -35,9 +38,20 @@ func Consumer() {
 			j, okay := <-jobs
 			if okay {
 				if repo.InsertLog(j) {
-					log.Println("save postgres")
-				} else {
 
+					log.Println("save postgres")
+
+					// rule critical
+					matched, err := regexp.MatchString("#critical", j)
+					if err != nil {
+						log.Println("Error regexp critical", err)
+					}
+
+					if matched {
+						notifyEmailDefault()
+					}
+
+				} else {
 					log.Println("received job, error processing service send postgres: \n", j)
 				}
 				// here send Postgres or ElasticSearch or SQS or S3.
@@ -50,4 +64,21 @@ func Consumer() {
 			}
 		}
 	}()
+}
+
+// you can parameterize
+// this function as needed
+func notifyEmailDefault() {
+
+	to := []string{gmail.EmailNotify}
+	subject := gmail.SubjectNotify
+	project := gmail.Project
+	message := gmail.Message
+
+	// if the message comes with some critical rules, send emails
+	if gmail.Send(to, subject, project, message) {
+		log.Println("Mail sent successfully!")
+	} else {
+		fmt.Println("error sending email!")
+	}
 }
