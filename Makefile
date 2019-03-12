@@ -49,6 +49,13 @@ build:
 	@GOOS=linux go build -o gologs -ldflags="-s -w" && ./gologs
 	@echo "\033[0;32mGenerated\033[0m \033[0;33m[ok]\033[0m \n"
 
+upx:
+	@echo "\033[0;33m################################## build prod exec: gologs ##################################\033[0m"
+	@GOOS=linux go build -o gologs -ldflags="-s -w"
+	@upx gologs
+	./gologs
+	@echo "\033[0;32mGenerated\033[0m \033[0;33m[ok]\033[0m \n"
+
 brute:
 	@echo "\033[0;33m################################## build prod exec: gologs ##################################\033[0m"
 	@GOOS=linux go build -o gologs -ldflags="-s -w"

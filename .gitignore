@@ -1,3 +1,4 @@
+deploy-push-aws.sh
 deploy-local.sh
 deploy-docker.sh
 start-local.sh
