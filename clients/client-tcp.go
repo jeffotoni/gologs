@@ -7,17 +7,31 @@ package main
 
 import (
   "bufio"
+  "flag"
   "fmt"
+  "log"
   "net"
   "strings"
 )
 
 func main() {
+
+  host := flag.String("host", "", "")
+  port := flag.String("port", "22335", "")
+
+  flag.Parse()
+  TCPHOST := *host + ":" + *port
+
   for i := 0; i < 10000; i++ {
+
     // connect to this socket
-    conn, _ := net.Dial("tcp", "localhost:22335")
+    conn, err := net.Dial("tcp", TCPHOST)
+    if err != nil {
+      log.Fatal("net Dial Client:", err)
+    }
+
     // println("Text to send: ")
-    jsonmsg := `{"versão": "1.1", "host": "exemplo.org", "short_message": "one msg", "nível": 5, "_some_info": "foo"}`
+    jsonmsg := `{"versão": "1.1", "host": "exemplo.org", "short_message": "one msg here...", "nível": 5, "some_info": "foo"}`
     // send to socket
     fmt.Fprintf(conn, jsonmsg)
 

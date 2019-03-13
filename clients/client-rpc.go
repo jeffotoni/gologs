@@ -6,6 +6,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net"
 	"net/rpc/jsonrpc"
@@ -18,7 +19,12 @@ type Args struct {
 
 func main() {
 
-	client, err := net.Dial("tcp", "127.0.0.1:22334")
+	host := flag.String("host", "127.0.0.1", "")
+	port := flag.String("port", "22334", "")
+
+	flag.Parse()
+	TCPHOST := *host + ":" + *port
+	client, err := net.Dial("tcp", TCPHOST)
 	if err != nil {
 		log.Fatal("dialing client:", err)
 	}
