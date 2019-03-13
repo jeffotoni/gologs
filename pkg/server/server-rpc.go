@@ -36,9 +36,9 @@ func (t *Receive) Json(args *Args, reply *string) error {
 
 func Rpc() {
 	re := new(Receive)
-	server := rpc.NewServer()
-	server.Register(re)
-	server.HandleHTTP(rpc.DefaultRPCPath, rpc.DefaultDebugPath)
+	serverRpc := rpc.NewServer()
+	serverRpc.Register(re)
+	serverRpc.HandleHTTP(rpc.DefaultRPCPath, rpc.DefaultDebugPath)
 	listener, e := net.Listen("tcp", PORT_RPC)
 	if e != nil {
 		log.Println("listen error:", e)
@@ -51,8 +51,10 @@ func Rpc() {
 			log.Println("accept error: " + err.Error())
 			return
 		} else {
-			log.Printf("New connection established in rpc server\n")
-			go server.ServeCodec(jsonrpc.NewServerCodec(conn))
+			if DEBUG {
+				log.Printf("New connection established in rpc server\n")
+			}
+			go serverRpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 		}
 	}
 }
