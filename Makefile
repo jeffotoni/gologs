@@ -9,11 +9,15 @@ export GMAIL_PASSWORD=xxxxxx
 export GMAIL_USER=xxxxxx
 export EMAIL_NOTIFIY=xxxxxx
 
-#### DB POSTGRES
+### DB POSTGRES
 export DB_NAME=xxxxxx
 export DB_HOST=localhost
 export DB_USER=xxxxxx
 export DB_PASSWORD=xxxxxx
+
+### DEBUG
+export DEBUG=false
+export DEBUG_REQ=10000
 
 all:
 	echo $$GOPATH
