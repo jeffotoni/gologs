@@ -13,24 +13,22 @@ import (
 )
 
 func main() {
+  for i := 0; i < 10000; i++ {
+    // connect to this socket
+    conn, _ := net.Dial("tcp", "localhost:22335")
+    // println("Text to send: ")
+    jsonmsg := `{"versão": "1.1", "host": "exemplo.org", "short_message": "one msg", "nível": 5, "_some_info": "foo"}`
+    // send to socket
+    fmt.Fprintf(conn, jsonmsg)
 
-  // connect to this socket
-  conn, _ := net.Dial("tcp", "localhost:22335")
-  //for {
-  // read in input from stdin
-  // reader := bufio.NewReader(os.Stdin)
-  fmt.Print("Text to send: ")
-  jsonmsg := `{"versão": "1.1", "host": "exemplo.org", "short_message": "one msg", "nível": 5, "_some_info": "foo"}`
-  // text, _ := reader.ReadString('\n')
-  // send to socket
-  fmt.Fprintf(conn, jsonmsg)
-  // listen for reply
-  message, _ := bufio.NewReader(conn).ReadString('\n')
-  message = strings.Trim(message, " ")
-  if strings.ToLower(message) == "ok" {
-    fmt.Printf("\nSave")
-  } else {
-    fmt.Printf("\nError server tcp")
+    // listen for reply
+    message, _ := bufio.NewReader(conn).ReadString('\n')
+    message = strings.Trim(message, " ")
+
+    if strings.ToLower(message) == "ok" {
+      // println("\nSave")
+    } else {
+      // println("\nError server tcp")
+    }
   }
-  //}
 }

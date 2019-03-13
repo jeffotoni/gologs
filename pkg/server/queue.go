@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
@@ -19,8 +18,10 @@ var jobs = make(chan string)
 
 var done = make(chan bool)
 
+var count int
+
 func Publish(okay string) {
-	time.Sleep(time.Millisecond * 200)
+	// time.Sleep(time.Millisecond * 50)
 	if len(okay) <= 0 {
 		return
 	}
@@ -34,21 +35,36 @@ func Consumer() {
 	// all our jobs, but never all jobs
 	go func() {
 		for {
-			time.Sleep(time.Second * 5)
+			// time.Sleep(time.Millisecond * 300)
 			j, okay := <-jobs
 			if okay {
 				if repo.InsertLog(j) {
 
-					log.Println("save postgres")
-
-					// rule critical
-					matched, err := regexp.MatchString("#critical#", j)
-					if err != nil {
-						log.Println("Error regexp critical", err)
+					// Just for debug
+					// And test
+					if DEBUG {
+						count++
+						if count == 1 {
+							log.Println("start save postgres")
+						}
+						if count == DEBUG_REQ {
+							log.Println("fim save postgres")
+							count = 0
+						}
 					}
 
-					if matched {
-						go notifyEmailDefault()
+					if len(gmail.GmailUser) > 0 &&
+						len(gmail.GmailPassword) > 0 &&
+						len(gmail.EmailNotify) > 0 {
+						// log.Println("save postgres")
+						// rule critical
+						matched, err := regexp.MatchString("#critical#", j)
+						if err != nil {
+							log.Println("Error regexp critical", err)
+						}
+						if matched {
+							go notifyEmailDefault()
+						}
 					}
 
 				} else {

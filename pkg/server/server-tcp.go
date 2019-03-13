@@ -27,7 +27,8 @@ func Tcp() {
   }
   // Close the listener when the application closes.
   defer l.Close()
-  // log.Println("Listening on " + CONN_HOST + ":" + CONN_PORT)
+
+  // loop
   for {
     // Listen for an incoming connection.
     conn, err := l.Accept()

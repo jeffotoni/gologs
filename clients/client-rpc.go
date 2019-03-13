@@ -6,7 +6,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"net/rpc/jsonrpc"
@@ -35,6 +34,6 @@ func main() {
 		if err != nil {
 			log.Fatal("capture json error:", err)
 		}
-		fmt.Printf("Result: %s\n", reply)
+		// fmt.Printf("Result: %s\n", reply)
 	}
 }
