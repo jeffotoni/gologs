@@ -224,3 +224,37 @@ func Connect() interface{} {
 		}
 	}
 }
+
+// conectando de forma segura usando goroutine
+func Connect2() interface{} {
+
+	if PostDb.Pgdb != nil {
+		// return objeto conexao
+		return dbPg.(*sql.DB), nil
+
+	} else {
+
+		// removendo aspas..
+		DB_NAME = strings.Replace(DB_NAME, `"`, "", -1)
+
+		DBINFO := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+			DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SSL)
+
+		once.Do(func() {
+			PostDb.Pgdb, err = sql.Open(DB_SORCE, DBINFO)
+		})
+
+		if err != nil {
+			log.Println(err.Error())
+			return nil, err
+		}
+
+		if ok2 := PostDb.Pgdb.Ping(); ok2 != nil {
+			log.Println("connect error...: ", ok2)
+			return nil, err
+		}
+
+		//log.Println("connect return sucess:: client [" + DB_NAME + "]")
+		return PostDb.Pgdb, nil
+	}
+}

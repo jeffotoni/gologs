@@ -38,15 +38,15 @@ func Consumer() {
 			// time.Sleep(time.Millisecond * 300)
 			j, okay := <-jobs
 			if okay {
-				//if repo.InsertLog(j) {
-				if true {
+				if repo.InsertLog(j) {
+					//if true {
 
 					// Just for debug
 					// And test
 					if DEBUG {
 						count++
 						if count == 1 {
-							log.Println("start not save postgres")
+							log.Println("start save postgres")
 						}
 						if count == DEBUG_REQ {
 							log.Println("fim save postgres")

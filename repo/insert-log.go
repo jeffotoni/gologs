@@ -19,7 +19,7 @@ func InsertLog(jsonMsg string) bool {
 
 	var Db = pg.PostDb.Pgdb
 	// Db...
-	if interf := pg.Connect(); interf != nil {
+	if interf := pg.Connect2(); interf != nil {
 		Db = interf.(*sql.DB)
 	} else {
 		return false
