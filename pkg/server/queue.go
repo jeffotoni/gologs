@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
@@ -21,7 +22,7 @@ var done = make(chan bool)
 var count int
 
 func Publish(okay string) {
-	// time.Sleep(time.Millisecond * 50)
+	time.Sleep(time.Millisecond * 100)
 	if len(okay) <= 0 {
 		return
 	}
