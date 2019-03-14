@@ -230,7 +230,7 @@ func Connect2() interface{} {
 
 	if PostDb.Pgdb != nil {
 		// return objeto conexao
-		return dbPg.(*sql.DB), nil
+		return PostDb.Pgdb
 
 	} else {
 
@@ -246,15 +246,15 @@ func Connect2() interface{} {
 
 		if err != nil {
 			log.Println(err.Error())
-			return nil, err
+			return err
 		}
 
 		if ok2 := PostDb.Pgdb.Ping(); ok2 != nil {
 			log.Println("connect error...: ", ok2)
-			return nil, err
+			return err
 		}
 
 		//log.Println("connect return sucess:: client [" + DB_NAME + "]")
-		return PostDb.Pgdb, nil
+		return PostDb.Pgdb
 	}
 }
