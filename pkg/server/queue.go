@@ -40,7 +40,6 @@ func Consumer() {
 			if okay {
 				if repo.Insert5Log(j) {
 					//if true {
-
 					// Just for debug
 					// And test
 					if DEBUG {
