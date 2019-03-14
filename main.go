@@ -5,24 +5,38 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	pg "github.com/jeffotoni/gologs/pkg/psql"
 	"github.com/jeffotoni/gologs/pkg/server"
 )
 
+var db *sql.DB
+
 func main() {
+
+	DBINFO := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		pg.DB_HOST, pg.DB_PORT, pg.DB_USER, pg.DB_PASSWORD, pg.DB_NAME, pg.DB_SSL)
+
+	db, err := sql.Open(pg.DB_SORCE, DBINFO)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
 
 	done := make(chan struct{})
 
 	// Rpc open
-	go server.Rpc()
+	go server.Rpc(db)
 
 	// Tcp open
-	go server.Tcp()
+	// go server.Tcp()
 
 	// Receives job
 	// from queue

@@ -6,6 +6,7 @@
 package server
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"regexp"
@@ -15,13 +16,18 @@ import (
 	"github.com/jeffotoni/gologs/repo"
 )
 
+var dbRPC *sql.DB
+
 var jobs = make(chan string)
 
 var done = make(chan bool)
 
 var count int
 
-func Publish(okay string) {
+func Publish(db *sql.DB, okay string) {
+
+	dbRPC = db
+
 	time.Sleep(time.Millisecond * 20)
 	if len(okay) <= 0 {
 		return
@@ -39,7 +45,7 @@ func Consumer() {
 			// time.Sleep(time.Millisecond * 300)
 			j, okay := <-jobs
 			if okay {
-				if repo.InsertLog(j) {
+				if repo.InsertLog(dbRPC, j) {
 					//if true {
 
 					// Just for debug
