@@ -59,14 +59,12 @@ func Insert2Log(jsonMsg string) bool {
 		time.Sleep(time.Second * 1)
 	}
 
-	// insert := `INSERT INTO gologs(record)values($1)`
+	insert := `INSERT INTO gologs(record)values($1)`
 	//insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
 	_, err = Db.Exec(insert, jsonMsg)
 	//_, err = Db.Exec(insert)
 
 	runtime.ReadMemStats(&m)
-
-	return true
 
 	if err != nil {
 		log.Println(err.Error())
