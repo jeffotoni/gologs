@@ -1,5 +1,5 @@
 #!/bin/bash
-GOOS=linux go build -o gologs -ldflags="-s -w"
+GOOS=linux go build -ldflags="-s -w" -o gologs gologs.go
 
 ### GMAIL SMTP
 export GMAIL_PASSWORD=xxxxxx

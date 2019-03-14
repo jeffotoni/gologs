@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
@@ -22,7 +21,7 @@ var done = make(chan bool)
 var count int
 
 func Publish(okay string) {
-	time.Sleep(time.Millisecond * 20)
+	//time.Sleep(time.Millisecond * 20)
 	if len(okay) <= 0 {
 		return
 	}
@@ -39,7 +38,7 @@ func Consumer() {
 			// time.Sleep(time.Second * 2)
 			j, okay := <-jobs
 			if okay {
-				if repo.Insert2Log(j) {
+				if repo.InsertLog(j) {
 					//if true {
 
 					// Just for debug
