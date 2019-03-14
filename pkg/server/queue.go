@@ -39,7 +39,7 @@ func Consumer() {
 			j, okay := <-jobs
 			if okay {
 				//if repo.InsertLog(j) {
-				if 1 {
+				if true {
 
 					// Just for debug
 					// And test
