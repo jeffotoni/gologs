@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
@@ -31,7 +32,7 @@ func Insert2Log(jsonMsg string) bool {
 
 	Db.SetMaxOpenConns(2)
 	Db.SetMaxIdleConns(1)
-	//Db.SetConnMaxLifetime(time.Hour)
+	Db.SetConnMaxLifetime(time.Second * 10)
 	defer Db.Close()
 
 	///////////////////////////////////////////////////
