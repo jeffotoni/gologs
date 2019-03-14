@@ -18,7 +18,7 @@ import (
 
 func main() {
 
-  host := flag.String("host", "", "")
+  host := flag.String("host", "localhost", "")
   port := flag.String("port", "22335", "")
   request := flag.String("req", "10000", "")
 
