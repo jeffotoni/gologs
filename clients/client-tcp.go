@@ -11,18 +11,33 @@ import (
   "fmt"
   "log"
   "net"
+  "strconv"
   "strings"
+  "time"
 )
 
 func main() {
 
   host := flag.String("host", "", "")
   port := flag.String("port", "22335", "")
+  request := flag.String("req", "10000", "")
 
   flag.Parse()
   TCPHOST := *host + ":" + *port
 
-  for i := 0; i < 10000; i++ {
+  req, _ := strconv.Atoi(*request)
+  if req <= 0 {
+    log.Fatal("Requests must be greater than 0")
+    return
+  }
+
+  start := time.Now()
+  fmt.Println("\033[0;32mRun Tests...\033[0;0m")
+  fmt.Println("\033[0;33mRequests: ", req)
+  fmt.Println("Port:     ", *port)
+  fmt.Printf("\033[0;0m")
+
+  for i := 0; i < req; i++ {
 
     // connect to this socket
     conn, err := net.Dial("tcp", TCPHOST)
@@ -45,4 +60,8 @@ func main() {
       // println("\nError server tcp")
     }
   }
+
+  end := time.Now()
+  diff := end.Sub(start)
+  fmt.Println("Time:    ", diff)
 }

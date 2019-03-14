@@ -11,4 +11,6 @@ export DB_NAME=xxxxxx
 export DB_HOST=localhost
 export DB_USER=xxxxxx
 export DB_PASSWORD=xxxxxx
+export DEBUG=false
+export DEBUG_REQ=10000
 ./gologs
