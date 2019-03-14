@@ -8,12 +8,19 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"runtime"
 	"strings"
 
 	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
 func Insert2Log(jsonMsg string) bool {
+
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	log.Println(m.Alloc)
+	s := make([]byte, 1024*1024)
+	s[0] = 0
 
 	if len(jsonMsg) <= 0 {
 		return false
@@ -50,6 +57,9 @@ func Insert2Log(jsonMsg string) bool {
 	insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
 	//_, err = Db.Exec(insert, jsonMsg)
 	_, err = Db.Exec(insert)
+
+	runtime.ReadMemStats(&m)
+	log.Println(m.Alloc)
 
 	return true
 
