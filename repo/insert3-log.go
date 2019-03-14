@@ -5,26 +5,17 @@
 package repo
 
 import (
-	"database/sql"
 	"log"
 
 	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
-func InsertLog(jsonMsg string) bool {
+func Insert3Log(jsonMsg string) bool {
 
 	if len(jsonMsg) <= 0 {
 		return false
 	}
-
-	var Db = pg.PostDb.Pgdb
-	// Db...
-	if interf := pg.Connect(); interf != nil {
-		Db = interf.(*sql.DB)
-	} else {
-		return false
-	}
-
+	Db := pg.Connect2()
 	insert := `INSERT INTO gologs(record)values($1)`
 	_, err := Db.Exec(insert, jsonMsg)
 

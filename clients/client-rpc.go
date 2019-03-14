@@ -50,11 +50,9 @@ func main() {
 	c := jsonrpc.NewClient(client)
 
 	for i := 0; i < req; i++ {
-
-		if i == 10000 {
-			time.Sleep(time.Second * 10)
-		}
-
+		// if i == 10000 {
+		// 	time.Sleep(time.Second * 10)
+		// }
 		// Synchronous call
 		args = &Args{`{"key":"jeff_` + strconv.Itoa(i) + `","level":"info", "project":"my-project-here"}`}
 		err = c.Call("Receive.Json", args, &reply)

@@ -43,7 +43,7 @@ func main() {
     conn, err := net.Dial("tcp", TCPHOST)
     if err != nil {
       log.Println("Net Dial Client: [ ", i, " ] ", err)
-      time.Sleep(time.Second * 10)
+      time.Sleep(time.Second * 5)
       continue
     }
 

@@ -56,35 +56,5 @@ func Insert2Log(jsonMsg string) bool {
 	wg.Wait()
 
 	return true
-	///////////////////////////////////////////////////
-	// Table gologs                                  //
-	// CREATE TABLE gologs (                         //
-	//     id serial not null primary key,           //
-	//     time Timestamptz not null default  now(), //
-	//     record Jsonb not null                     //
-	// );                                            //
-	///////////////////////////////////////////////////
 
-	//data := time.Now().Format(cf.LayoutDate)
-	//hora := time.Now().Format(cf.LayoutHour)
-
-	// if m.Alloc > 104857600 { // 100Mb
-	// 	log.Println(m.Alloc)
-	// 	time.Sleep(time.Second * 1)
-	// }
-
-	// insert := `INSERT INTO gologs(record)values($1)`
-	// //insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
-	// _, err = Db.Exec(insert, jsonMsg)
-	// //_, err = Db.Exec(insert)
-
-	// // runtime.ReadMemStats(&m)
-
-	// if err != nil {
-	// 	log.Println(err.Error())
-	// 	//log.Println(jsonMsg)
-	// 	return false
-	// }
-
-	// return true
 }
