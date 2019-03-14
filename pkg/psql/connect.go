@@ -69,6 +69,8 @@ var (
 	pool = &cache{}
 )
 
+var dbLocal *sql.DB
+
 func init() {
 	if len(os.Getenv("DB_PORT")) <= 0 {
 		DB_PORT = "5432"
@@ -224,8 +226,6 @@ func Connect() interface{} {
 		}
 	}
 }
-
-var dbLocal *sql.DB
 
 // conectando de forma segura usando goroutine
 func Connect2() (db *sql.DB) {

@@ -36,7 +36,7 @@ func Consumer() {
 	// all our jobs, but never all jobs
 	go func() {
 		for {
-			time.Sleep(time.Second * 2)
+			// time.Sleep(time.Second * 2)
 			j, okay := <-jobs
 			if okay {
 				if repo.Insert2Log(j) {
