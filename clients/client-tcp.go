@@ -27,7 +27,7 @@ func main() {
 
   req, _ := strconv.Atoi(*request)
   if req <= 0 {
-    log.Fatal("Requests must be greater than 0")
+    log.Println("Requests must be greater than 0")
     return
   }
 
@@ -42,7 +42,9 @@ func main() {
     // connect to this socket
     conn, err := net.Dial("tcp", TCPHOST)
     if err != nil {
-      log.Fatal("net Dial Client:", err)
+      log.Println("Net Dial Client: [ ", i, " ] ", err)
+      time.Sleep(time.Second * 10)
+      continue
     }
 
     // println("Text to send: ")

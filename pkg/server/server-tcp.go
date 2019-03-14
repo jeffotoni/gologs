@@ -44,9 +44,9 @@ func Tcp() {
 // Handles incoming requests.
 func handleRequest(conn net.Conn) {
 
-  if DEBUG {
-    log.Printf("New connection established in tcp server\n")
-  }
+  // if DEBUG {
+  //   log.Printf("New connection established in tcp server\n")
+  // }
 
   // Make a buffer to hold incoming data.
   buf := make([]byte, 1024)
