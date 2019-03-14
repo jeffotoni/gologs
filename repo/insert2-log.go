@@ -8,20 +8,19 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"runtime"
 	"strings"
-	"time"
+	"sync"
 
 	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
 func Insert2Log(jsonMsg string) bool {
 
-	var m runtime.MemStats
-	runtime.ReadMemStats(&m)
-	log.Println(m.Alloc)
-	s := make([]byte, 1024*1024)
-	s[0] = 0
+	// var m runtime.MemStats
+	// runtime.ReadMemStats(&m)
+	// log.Println(m.Alloc)
+	// s := make([]byte, 1024*1024)
+	// s[0] = 0
 
 	if len(jsonMsg) <= 0 {
 		return false
@@ -37,11 +36,26 @@ func Insert2Log(jsonMsg string) bool {
 		return false
 	}
 
-	//Db.SetMaxOpenConns(2)
-	//Db.SetMaxIdleConns(1)
-	//Db.SetConnMaxLifetime(time.Second * 10)
+	Db.SetMaxOpenConns(20)
+	Db.SetMaxIdleConns(20)
+	Db.SetConnMaxLifetime(0)
 	defer Db.Close()
 
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func(jsonMsg string) {
+		defer wg.Done()
+		//_, err := db.Exec(msg)
+		insert := `INSERT INTO gologs(record)values($1)`
+		_, err = Db.Exec(insert, jsonMsg)
+		if err != nil {
+			log.Println(err)
+		}
+	}(jsonMsg)
+	wg.Wait()
+
+	return true
 	///////////////////////////////////////////////////
 	// Table gologs                                  //
 	// CREATE TABLE gologs (                         //
@@ -54,23 +68,23 @@ func Insert2Log(jsonMsg string) bool {
 	//data := time.Now().Format(cf.LayoutDate)
 	//hora := time.Now().Format(cf.LayoutHour)
 
-	if m.Alloc > 104857600 { // 100Mb
-		log.Println(m.Alloc)
-		time.Sleep(time.Second * 1)
-	}
+	// if m.Alloc > 104857600 { // 100Mb
+	// 	log.Println(m.Alloc)
+	// 	time.Sleep(time.Second * 1)
+	// }
 
-	insert := `INSERT INTO gologs(record)values($1)`
-	//insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
-	_, err = Db.Exec(insert, jsonMsg)
-	//_, err = Db.Exec(insert)
+	// insert := `INSERT INTO gologs(record)values($1)`
+	// //insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
+	// _, err = Db.Exec(insert, jsonMsg)
+	// //_, err = Db.Exec(insert)
 
-	runtime.ReadMemStats(&m)
+	// // runtime.ReadMemStats(&m)
 
-	if err != nil {
-		log.Println(err.Error())
-		//log.Println(jsonMsg)
-		return false
-	}
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// 	//log.Println(jsonMsg)
+	// 	return false
+	// }
 
-	return true
+	// return true
 }
