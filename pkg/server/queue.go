@@ -22,7 +22,7 @@ var done = make(chan bool)
 var count int
 
 func Publish(okay string) {
-	time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * 20)
 	if len(okay) <= 0 {
 		return
 	}
