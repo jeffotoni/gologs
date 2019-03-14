@@ -5,26 +5,31 @@
 package repo
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
+	"strings"
 
 	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
-func InsertLog(jsonMsg string) bool {
+func Insert2Log(jsonMsg string) bool {
 
 	if len(jsonMsg) <= 0 {
 		return false
 	}
 
-	Db := pg.Connect2()
+	// removendo aspas..
+	pg.DB_NAME = strings.Replace(pg.DB_NAME, `"`, "", -1)
 
-	// var Db = pg.PostDb.Pgdb
-	// // Db...
-	// if interf := pg.Connect2(); interf != nil {
-	// 	Db = interf.(*sql.DB)
-	// } else {
-	// 	return false
-	// }
+	DBINFO := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		pg.DB_HOST, pg.DB_PORT, pg.DB_USER, pg.DB_PASSWORD, pg.DB_NAME, pg.DB_SSL)
+
+	Db, err := sql.Open(pg.DB_SORCE, DBINFO)
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
 
 	///////////////////////////////////////////////////
 	// Table gologs                                  //
@@ -39,7 +44,7 @@ func InsertLog(jsonMsg string) bool {
 	//hora := time.Now().Format(cf.LayoutHour)
 
 	insert := `INSERT INTO gologs(record)values($1)`
-	_, err := Db.Exec(insert, jsonMsg)
+	_, err = Db.Exec(insert, jsonMsg)
 
 	if err != nil {
 		log.Println(err.Error())

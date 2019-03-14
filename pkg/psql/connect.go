@@ -225,12 +225,14 @@ func Connect() interface{} {
 	}
 }
 
-// conectando de forma segura usando goroutine
-func Connect2() interface{} {
+var dbLocal *sql.DB
 
-	if PostDb.Pgdb != nil {
+// conectando de forma segura usando goroutine
+func Connect2() (db *sql.DB) {
+
+	if dbLocal != nil {
 		// return objeto conexao
-		return PostDb.Pgdb
+		return dbLocal
 
 	} else {
 
@@ -241,20 +243,19 @@ func Connect2() interface{} {
 			DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SSL)
 
 		once.Do(func() {
-			PostDb.Pgdb, err = sql.Open(DB_SORCE, DBINFO)
+			dbLocal, err = sql.Open(DB_SORCE, DBINFO)
 		})
 
 		if err != nil {
 			log.Println(err.Error())
-			return err
+			return dbLocal
 		}
 
-		if ok2 := PostDb.Pgdb.Ping(); ok2 != nil {
-			log.Println("connect error...: ", ok2)
-			return err
-		}
-
+		// if ok2 := PostDb.Pgdb.Ping(); ok2 != nil {
+		// 	log.Println("connect error...: ", ok2)
+		// 	return err
+		// }
 		//log.Println("connect return sucess:: client [" + DB_NAME + "]")
-		return PostDb.Pgdb
+		return dbLocal
 	}
 }
