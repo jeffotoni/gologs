@@ -12,5 +12,5 @@ export DB_HOST=localhost
 export DB_USER=gologs
 export DB_PASSWORD=1234
 export DEBUG=true
-export DEBUG_REQ=100000
+export DEBUG_REQ=10000
 ./gologs

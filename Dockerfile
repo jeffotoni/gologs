@@ -16,7 +16,7 @@ WORKDIR /go/src/gologs
 ENV GO111MODULE=on
 COPY . .
 #RUN go install -v ./...
-RUN GOOS=linux go  build -o gologs -ldflags="-s -w"
+RUN GOOS=linux go  build -ldflags="-s -w" -o gologs main.go
 RUN upx --brute gologs
 #RUN upx gologs
 RUN cp gologs /go/bin/gologs
