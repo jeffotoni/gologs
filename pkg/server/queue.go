@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
+	"github.com/jeffotoni/gologs/repo"
 )
 
 var jobs = make(chan string)
