@@ -31,6 +31,8 @@ func Insert2Log(jsonMsg string) bool {
 		return false
 	}
 
+	defer Db.Close()
+
 	///////////////////////////////////////////////////
 	// Table gologs                                  //
 	// CREATE TABLE gologs (                         //

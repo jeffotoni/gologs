@@ -5,17 +5,18 @@
 package repo
 
 import (
-	"database/sql"
 	"log"
+
+	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
-func InsertLog(Db *sql.DB, jsonMsg string) bool {
+func InsertLog(jsonMsg string) bool {
 
 	if len(jsonMsg) <= 0 {
 		return false
 	}
 
-	// Db := pg.Connect2()
+	Db := pg.Connect2()
 
 	// var Db = pg.PostDb.Pgdb
 	// // Db...

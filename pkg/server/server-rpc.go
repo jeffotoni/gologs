@@ -6,14 +6,11 @@
 package server
 
 import (
-	"database/sql"
 	"log"
 	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
 )
-
-var dbRpc *sql.DB
 
 var PORT_RPC = ":22334"
 
@@ -33,14 +30,11 @@ func (t *Receive) Json(args *Args, reply *string) error {
 	*reply = "ok"
 	// log.Println("Server Receive: ", args.Json)
 	// add msg
-	go Publish(dbRpc, args.Json)
+	go Publish(args.Json)
 	return nil
 }
 
-func Rpc(db *sql.DB) {
-
-	dbRpc = db
-
+func Rpc() {
 	re := new(Receive)
 	serverRpc := rpc.NewServer()
 	serverRpc.Register(re)
