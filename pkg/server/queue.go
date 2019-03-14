@@ -46,7 +46,7 @@ func Consumer() {
 					if DEBUG {
 						count++
 						if count == 1 {
-							log.Println("start save postgres")
+							log.Println("start not save postgres")
 						}
 						if count == DEBUG_REQ {
 							log.Println("fim save postgres")
