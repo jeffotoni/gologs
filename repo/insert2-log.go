@@ -35,6 +35,8 @@ func Insert2Log(jsonMsg string) bool {
 	Db.SetConnMaxLifetime(time.Second * 10)
 	defer Db.Close()
 
+	return true
+
 	///////////////////////////////////////////////////
 	// Table gologs                                  //
 	// CREATE TABLE gologs (                         //
