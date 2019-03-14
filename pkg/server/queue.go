@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
-	"github.com/jeffotoni/gologs/repo"
 )
 
 var jobs = make(chan string)
@@ -39,7 +38,8 @@ func Consumer() {
 			// time.Sleep(time.Millisecond * 300)
 			j, okay := <-jobs
 			if okay {
-				if repo.InsertLog(j) {
+				//if repo.InsertLog(j) {
+				if 1 {
 
 					// Just for debug
 					// And test
