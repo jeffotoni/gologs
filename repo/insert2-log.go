@@ -10,6 +10,7 @@ import (
 	"log"
 	"runtime"
 	"strings"
+	"time"
 
 	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
@@ -53,13 +54,17 @@ func Insert2Log(jsonMsg string) bool {
 	//data := time.Now().Format(cf.LayoutDate)
 	//hora := time.Now().Format(cf.LayoutHour)
 
+	if m.Alloc > 104857600 { // 100Mb
+		log.Println(m.Alloc)
+		time.Sleep(time.Second * 1)
+	}
+
 	// insert := `INSERT INTO gologs(record)values($1)`
-	insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
-	//_, err = Db.Exec(insert, jsonMsg)
-	_, err = Db.Exec(insert)
+	//insert := `INSERT INTO gologs(record)values('` + jsonMsg + `')`
+	_, err = Db.Exec(insert, jsonMsg)
+	//_, err = Db.Exec(insert)
 
 	runtime.ReadMemStats(&m)
-	log.Println(m.Alloc)
 
 	return true
 
