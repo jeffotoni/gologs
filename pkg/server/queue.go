@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
-	"github.com/jeffotoni/gologs/pkg/redis"
 	"github.com/jeffotoni/gologs/repo"
 )
 
@@ -22,9 +21,7 @@ var done = make(chan bool)
 
 var count int
 
-var client = redis.NewClient()
-
-//var count2 int
+var count2 int
 
 func Publish(okay string) {
 	//time.Sleep(time.Millisecond * 20)
@@ -44,8 +41,8 @@ func Consumer() {
 			// time.Sleep(time.Second * 2)
 			j, okay := <-jobs
 			if okay {
-				if true {
-					//if repo.Map(count, j) {
+				//if true {
+				if repo.Map(count, j) {
 					//if repo.Insert5Log(j) {
 					//if true {
 					// Just for debug
@@ -63,16 +60,16 @@ func Consumer() {
 							count = 0
 						}
 					} else {
+						//repo.Insert5Log(j)
 						// if prod
 						count++
-						// count2++
-						//if count2 == MEMORY {
-						// log.Println("start save Redis!")
-						// go repo.SavePg()
-						redis.SaveRedis(client, count, j)
-						//count2 = 0
-						time.Sleep(time.Millisecond * 100)
-						//}
+						count2++
+						if count2 == MEMORY {
+							log.Println("start save Redis!")
+							go repo.SaveRedis()
+							count2 = 0
+							time.Sleep(time.Millisecond * 1000)
+						}
 					}
 
 					if len(gmail.GmailUser) > 0 &&

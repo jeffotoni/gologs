@@ -7,6 +7,8 @@ package repo
 import (
 	"log"
 	"sync"
+
+	"github.com/jeffotoni/gologs/pkg/redis"
 )
 
 var m sync.Map
@@ -31,4 +33,18 @@ func SavePg() {
 	})
 
 	log.Println("fim save Postgres!")
+}
+
+func SaveRedis() {
+
+	//erase map
+	m.Range(func(key interface{}, value interface{}) bool {
+		// save in DB
+		redis.SaveRedis(key.(int), value.(string))
+		m.Delete(key)
+		// time.Sleep(time.Millisecond * 1500)
+		return true
+	})
+
+	log.Println("fim save Redis!")
 }

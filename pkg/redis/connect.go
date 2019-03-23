@@ -11,10 +11,10 @@ import (
 	"github.com/go-redis/redis"
 )
 
-// var client *redis.Client
+var client *redis.Client
 
 func NewClient() *redis.Client {
-	client := redis.NewClient(&redis.Options{
+	client = redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
@@ -31,7 +31,7 @@ func NewClient() *redis.Client {
 	// Output: PONG <nil>
 }
 
-func SaveRedis(client *redis.Client, key_int int, value string) {
+func SaveRedis(key_int int, value string) {
 	key := strconv.Itoa(key_int)
 	err := client.Set(key, value, 0).Err()
 	if err != nil {
