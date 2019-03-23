@@ -39,7 +39,8 @@ func Consumer() {
 			// time.Sleep(time.Second * 2)
 			j, okay := <-jobs
 			if okay {
-				if repo.Map(count, j) {
+				if true {
+					//if repo.Map(count, j) {
 					//if repo.Insert5Log(j) {
 					//if true {
 					// Just for debug
@@ -62,7 +63,8 @@ func Consumer() {
 						count2++
 						if count2 == MEMORY {
 							log.Println("start save Postgres!")
-							go repo.SavePg()
+							// go repo.SavePg()
+							repo.SaveRedis(count, j)
 							count2 = 0
 							time.Sleep(time.Millisecond * 1000)
 						}
