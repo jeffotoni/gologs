@@ -54,7 +54,7 @@ func main() {
 		// 	time.Sleep(time.Second * 10)
 		// }
 		// Synchronous call
-		args = &Args{`{"key":"jeff_` + strconv.Itoa(i) + `","level":"info", "project":"my-project-here"}`}
+		args = &Args{`{"versão": "1.1","host": "exemplo.org","key":"jeff_` + strconv.Itoa(i) + `","level":"info", "project":"my-project-here","short_message": "one msg here...", "nível": 5, "some_info": "foo"}`}
 		err = c.Call("Receive.Json", args, &reply)
 		if err != nil {
 			log.Fatal("capture json error:", err)
