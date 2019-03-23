@@ -7,7 +7,6 @@ package repo
 import (
 	"log"
 	"sync"
-	"time"
 )
 
 var m sync.Map
@@ -27,7 +26,7 @@ func SavePg() {
 		// save in DB
 		// Insert5Log(value.(string))
 		m.Delete(key)
-		time.Sleep(time.Millisecond * 1500)
+		// time.Sleep(time.Millisecond * 1500)
 		return true
 	})
 
