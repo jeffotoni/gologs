@@ -25,7 +25,7 @@ func SavePg() {
 	//erase map
 	m.Range(func(key interface{}, value interface{}) bool {
 		// save in DB
-		Insert5Log(value.(string))
+		// Insert5Log(value.(string))
 		m.Delete(key)
 		time.Sleep(time.Millisecond * 1500)
 		return true
