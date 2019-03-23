@@ -18,7 +18,7 @@ var jobs = make(chan string)
 
 var done = make(chan bool)
 
-var count int
+var count, count2 int
 
 func Publish(okay string) {
 	//time.Sleep(time.Millisecond * 20)
@@ -58,9 +58,10 @@ func Consumer() {
 					} else {
 						// if prod
 						count++
-						if count == MEMORY {
+						count2++
+						if count2 == MEMORY {
 							go repo.SavePg()
-							count = 0
+							count2 = 0
 						}
 					}
 
