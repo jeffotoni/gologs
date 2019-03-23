@@ -22,6 +22,8 @@ var done = make(chan bool)
 
 var count int
 
+var client = redis.NewClient()
+
 //var count2 int
 
 func Publish(okay string) {
@@ -67,7 +69,7 @@ func Consumer() {
 						//if count2 == MEMORY {
 						// log.Println("start save Redis!")
 						// go repo.SavePg()
-						redis.SaveRedis(count, j)
+						redis.SaveRedis(client, count, j)
 						//count2 = 0
 						time.Sleep(time.Millisecond * 100)
 						//}
