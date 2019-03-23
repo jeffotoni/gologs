@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
@@ -19,7 +18,9 @@ var jobs = make(chan string)
 
 var done = make(chan bool)
 
-var count, count2 int
+var count int
+
+//var count2 int
 
 func Publish(okay string) {
 	//time.Sleep(time.Millisecond * 20)
@@ -60,14 +61,14 @@ func Consumer() {
 					} else {
 						// if prod
 						count++
-						count2++
-						if count2 == MEMORY {
-							log.Println("start save Postgres!")
-							// go repo.SavePg()
-							repo.SaveRedis(count, j)
-							count2 = 0
-							time.Sleep(time.Millisecond * 1000)
-						}
+						// count2++
+						//if count2 == MEMORY {
+						log.Println("start save Redis!")
+						// go repo.SavePg()
+						repo.SaveRedis(count, j)
+						//count2 = 0
+						// time.Sleep(time.Millisecond * 1000)
+						//}
 					}
 
 					if len(gmail.GmailUser) > 0 &&
