@@ -32,7 +32,7 @@ func init() {
 	if len(MEMORY_S) > 0 {
 		MEMORY, _ = strconv.Atoi(MEMORY_S)
 	} else {
-		MEMORY = 300000
+		MEMORY = 200000
 	}
 
 	// show
