@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
+	"github.com/jeffotoni/gologs/pkg/redis"
 	"github.com/jeffotoni/gologs/repo"
 )
 
@@ -66,9 +67,9 @@ func Consumer() {
 						//if count2 == MEMORY {
 						// log.Println("start save Redis!")
 						// go repo.SavePg()
-						repo.SaveRedis(count, j)
+						redis.SaveRedis(count, j)
 						//count2 = 0
-						time.Sleep(time.Millisecond * 300)
+						time.Sleep(time.Millisecond * 100)
 						//}
 					}
 
