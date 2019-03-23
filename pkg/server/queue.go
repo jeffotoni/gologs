@@ -55,6 +55,13 @@ func Consumer() {
 							go repo.SavePg()
 							count = 0
 						}
+					} else {
+						// if prod
+						count++
+						if count == MEMORY {
+							go repo.SavePg()
+							count = 0
+						}
 					}
 
 					if len(gmail.GmailUser) > 0 &&
@@ -72,7 +79,7 @@ func Consumer() {
 					}
 
 				} else {
-					log.Println("received job, error processing service send postgres: \n", j)
+					log.Println("received job, error processing service send Map: \n", j)
 				}
 				// here send Postgres or ElasticSearch or SQS or S3.
 				// depending on the message sending email

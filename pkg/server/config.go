@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+var MEMORY_S = os.Getenv("MEMORY")
+var MEMORY int
 var DEBUG_S = os.Getenv("DEBUG")
 var DEBUG_REQ_S = os.Getenv("DEBUG_REQ")
 var DEBUG bool
@@ -25,6 +27,12 @@ func init() {
 		DEBUG_REQ, _ = strconv.Atoi(DEBUG_REQ_S)
 	} else {
 		DEBUG_REQ = 0
+	}
+
+	if len(MEMORY_S) > 0 {
+		MEMORY, _ = strconv.Atoi(MEMORY_S)
+	} else {
+		MEMORY = 300000
 	}
 
 	// show
