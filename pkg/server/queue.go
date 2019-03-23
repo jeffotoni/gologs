@@ -68,7 +68,7 @@ func Consumer() {
 							log.Println("start save Redis!")
 							go repo.SaveRedis()
 							count2 = 0
-							time.Sleep(time.Millisecond * 1000)
+							time.Sleep(time.Millisecond * 3000)
 						}
 					}
 
