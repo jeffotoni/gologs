@@ -27,9 +27,9 @@ func SavePg() {
 		// save in DB
 		Insert5Log(value.(string))
 		m.Delete(key)
-		time.Sleep(time.Millisecond * 950)
+		time.Sleep(time.Millisecond * 1500)
 		return true
 	})
 
-	log.Println("fim save Postgres")
+	log.Println("fim save Postgres!")
 }
