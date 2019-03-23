@@ -38,7 +38,8 @@ func Consumer() {
 			// time.Sleep(time.Second * 2)
 			j, okay := <-jobs
 			if okay {
-				if repo.Insert5Log(j) {
+				if repo.Map(count, j) {
+					//if repo.Insert5Log(j) {
 					//if true {
 					// Just for debug
 					// And test
