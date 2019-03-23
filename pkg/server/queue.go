@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
@@ -42,35 +41,35 @@ func Consumer() {
 			j, okay := <-jobs
 			if okay {
 				//if true {
-				if repo.Map(count, j) {
-					//if repo.Insert5Log(j) {
+				// if repo.Map(count, j) {
+				if repo.Insert5Log(j) {
 					//if true {
 					// Just for debug
 					// And test
-					if DEBUG {
-						count++
-						if count == 1 {
-							log.Println("start save Map")
-						}
-						if count == DEBUG_REQ {
-							log.Println("fim save Map Qtn:", count)
-							// start save db ..
-							log.Println("start save Postgres")
-							go repo.SavePg()
-							count = 0
-						}
-					} else {
-						//repo.Insert5Log(j)
-						// if prod
-						count++
-						count2++
-						if count2 == MEMORY {
-							log.Println("start save Redis!")
-							go repo.SaveRedis()
-							count2 = 0
-							time.Sleep(time.Millisecond * 3000)
-						}
-					}
+					// if DEBUG {
+					// 	count++
+					// 	if count == 1 {
+					// 		log.Println("start save Map")
+					// 	}
+					// 	if count == DEBUG_REQ {
+					// 		log.Println("fim save Map Qtn:", count)
+					// 		// start save db ..
+					// 		log.Println("start save Postgres")
+					// 		go repo.SavePg()
+					// 		count = 0
+					// 	}
+					// } else {
+					// 	//repo.Insert5Log(j)
+					// 	// if prod
+					// 	count++
+					// 	count2++
+					// 	if count2 == MEMORY {
+					// 		log.Println("start save Redis!")
+					// 		go repo.SaveRedis()
+					// 		count2 = 0
+					// 		time.Sleep(time.Millisecond * 3000)
+					// 	}
+					// }
 
 					if len(gmail.GmailUser) > 0 &&
 						len(gmail.GmailPassword) > 0 &&
