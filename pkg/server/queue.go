@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	"github.com/jeffotoni/gologs/repo"
@@ -63,11 +64,11 @@ func Consumer() {
 						count++
 						// count2++
 						//if count2 == MEMORY {
-						log.Println("start save Redis!")
+						// log.Println("start save Redis!")
 						// go repo.SavePg()
 						repo.SaveRedis(count, j)
 						//count2 = 0
-						// time.Sleep(time.Millisecond * 1000)
+						time.Sleep(time.Millisecond * 300)
 						//}
 					}
 

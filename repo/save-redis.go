@@ -16,7 +16,7 @@ func SaveRedis(key_int int, value string) {
 	key := strconv.Itoa(key_int)
 	err := client.Set(key, value, 0).Err()
 	if err != nil {
-		log.Println(err)
+		log.Println("redis:: ", err)
 		return
 	}
 }
