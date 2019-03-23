@@ -46,10 +46,13 @@ func Consumer() {
 					if DEBUG {
 						count++
 						if count == 1 {
-							log.Println("start save postgres")
+							log.Println("start save Map")
 						}
 						if count == DEBUG_REQ {
-							log.Println("fim save postgres")
+							log.Println("fim save Map Qtn:", count)
+							// start save db ..
+							log.Println("start save Postgres")
+							go repo.SavePg()
 							count = 0
 						}
 					}
