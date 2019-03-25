@@ -46,7 +46,7 @@ func Consumer() {
 				// if repo.Map(count, j) {
 				//if repo.Insert5Log(j) {
 				// if redis.SaveRedis(count, j) {
-				if rabbitqm.SendV0(count, j) {
+				if rabbitqm.SendV2(count, j) {
 					//if true {
 					// Just for debug
 					// And test
