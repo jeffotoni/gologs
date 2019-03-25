@@ -48,7 +48,7 @@ func main() {
     }
 
     // println("Text to send: ")
-    jsonmsg := `{"versão": "1.1", "host": "exemplo.org", "short_message": "one msg here...", "nível": 5, "some_info": "foo"}`
+    jsonmsg := `{"versão": "1.1", "host": "exemplo.org", "short_message": "one msg here...: ` + strconv.Itoa(i) + `", "nível": 10, "some_info": "foo"}`
     // send to socket
     fmt.Fprintf(conn, jsonmsg)
 
