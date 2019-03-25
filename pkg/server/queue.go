@@ -12,7 +12,8 @@ import (
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	//"github.com/jeffotoni/gologs/repo"
-	"github.com/jeffotoni/gologs/pkg/redis"
+	// "github.com/jeffotoni/gologs/pkg/redis"
+	"github.com/jeffotoni/gologs/pkg/rabbitqm"
 )
 
 var jobs = make(chan string)
@@ -44,7 +45,8 @@ func Consumer() {
 				//if true {
 				// if repo.Map(count, j) {
 				//if repo.Insert5Log(j) {
-				if redis.SaveRedis(count, j) {
+				// if redis.SaveRedis(count, j) {
+				if rabbitqm.Publish(count, j) {
 					//if true {
 					// Just for debug
 					// And test
