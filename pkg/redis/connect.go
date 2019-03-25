@@ -43,5 +43,5 @@ func SaveRedis(key_int int, value string) bool {
 		return false
 	}
 
-	retur true
+	return true
 }
