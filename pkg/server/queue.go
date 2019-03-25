@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	//"github.com/jeffotoni/gologs/repo"
@@ -52,6 +53,12 @@ func Consumer() {
 					// And test
 					// if DEBUG {
 					count++
+					count2++
+
+					if count2 == 20000 {
+						time.Sleep(time.Second * 5)
+						count2 = 0
+					}
 					// 	if count == 1 {
 					// 		log.Println("start save Map")
 					// 	}
