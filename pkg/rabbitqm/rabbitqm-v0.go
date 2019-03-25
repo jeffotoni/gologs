@@ -74,10 +74,10 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 
 	// Publishes a message onto the queue.
 	err = ch.Publish(
-		"",         // use the default exchange
-		queue.Name, // routing key, e.g. our queue name
-		false,      // mandatory
-		false,      // immediate
+		"gologs_exchange1", // use the default exchange
+		queue.Name,         // routing key, e.g. our queue name
+		false,              // mandatory
+		false,              // immediate
 		amqp.Publishing{
 			ContentType: "application/json",
 			Body:        body, // Our JSON body as []byte
@@ -88,7 +88,9 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 
 func SendV2(key_int int, body string) bool {
 
-	ci.PublishOnQueue([]byte(body))
+	if ci.PublishOnQueue([]byte(body)) != nil {
+		return false
+	}
 
 	return true
 }
