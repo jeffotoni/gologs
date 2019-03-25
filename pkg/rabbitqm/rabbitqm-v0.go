@@ -81,6 +81,7 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 		amqp.Publishing{
 			ContentType: "application/json",
 			Body:        body, // Our JSON body as []byte
+			// DeliveryMode: amqp.Transient, // 1=non-persistent, 2=persistent
 		})
 	//fmt.Printf("A message was sent to queue %v: %v", queueName, body)
 	return err

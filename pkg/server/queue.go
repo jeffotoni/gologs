@@ -9,12 +9,10 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"time"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	//"github.com/jeffotoni/gologs/repo"
 	// "github.com/jeffotoni/gologs/pkg/redis"
-	"github.com/jeffotoni/gologs/pkg/rabbitqm"
 )
 
 var jobs = make(chan string)
@@ -46,19 +44,19 @@ func Consumer() {
 				//if true {
 				// if repo.Map(count, j) {
 				//if repo.Insert5Log(j) {
-				// if redis.SaveRedis(count, j) {
-				if rabbitqm.SendV2(count, j) {
+				if redis.SaveRedis(count, j) {
+					//if rabbitqm.SendV2(count, j) {
 					//if true {
 					// Just for debug
 					// And test
 					// if DEBUG {
 					count++
-					count2++
+					//count2++
 
-					if count2 == 20000 {
-						time.Sleep(time.Second * 5)
-						count2 = 0
-					}
+					// if count2 == 20000 {
+					// 	time.Sleep(time.Second * 5)
+					// 	count2 = 0
+					// }
 					// 	if count == 1 {
 					// 		log.Println("start save Map")
 					// 	}
