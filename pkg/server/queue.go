@@ -11,7 +11,8 @@ import (
 	"regexp"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
-	"github.com/jeffotoni/gologs/repo"
+	//"github.com/jeffotoni/gologs/repo"
+	"github.com/jeffotoni/gologs/redis"
 )
 
 var jobs = make(chan string)
@@ -42,12 +43,13 @@ func Consumer() {
 			if okay {
 				//if true {
 				// if repo.Map(count, j) {
-				if repo.Insert5Log(j) {
+				//if repo.Insert5Log(j) {
+				if redis.SaveRedis(count, j) {
 					//if true {
 					// Just for debug
 					// And test
 					// if DEBUG {
-					// 	count++
+					count++
 					// 	if count == 1 {
 					// 		log.Println("start save Map")
 					// 	}
