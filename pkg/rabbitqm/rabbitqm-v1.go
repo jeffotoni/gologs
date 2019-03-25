@@ -125,10 +125,10 @@ func Send(key_int int, value string) bool {
 
 	body := value
 	err = ch.Publish(
-		"",     // exchange
-		q.Name, // routing key
-		false,  // mandatory
-		false,  // immediate
+		"gologs", // exchange
+		q.Name,   // routing key
+		false,    // mandatory
+		false,    // immediate
 		amqp.Publishing{
 			ContentType: "application/json",
 			Body:        []byte(body),
