@@ -4,3 +4,4 @@ deploy-docker.sh
 start-local.sh
 .env
 env
+gologs
