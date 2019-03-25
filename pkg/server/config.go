@@ -16,7 +16,20 @@ var DEBUG_REQ_S = os.Getenv("DEBUG_REQ")
 var DEBUG bool
 var DEBUG_REQ int
 
+// postgres
+// redis
+// rabbitqm
+// Default postgres
+var SERVICE = os.Getenv("SERVICE")
+
 func init() {
+
+	// services accept
+	// Default postgres
+	if len(SERVICE) <= 0 {
+		SERVICE = "postgres"
+	}
+
 	if len(DEBUG_S) <= 0 {
 		DEBUG = false
 	} else {
