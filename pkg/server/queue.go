@@ -12,7 +12,7 @@ import (
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	//"github.com/jeffotoni/gologs/repo"
-	"github.com/jeffotoni/gologs/redis"
+	"github.com/jeffotoni/gologs/pkg/redis"
 )
 
 var jobs = make(chan string)
