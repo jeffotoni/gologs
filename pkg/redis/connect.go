@@ -35,11 +35,13 @@ func NewClient() *redis.Client {
 	// Output: PONG <nil>
 }
 
-func SaveRedis(key_int int, value string) {
+func SaveRedis(key_int int, value string) bool {
 	key := strconv.Itoa(key_int)
 	err := client.Set(key, value, 0).Err()
 	if err != nil {
 		log.Println("redis:: ", err)
-		return
+		return false
 	}
+
+	retur true
 }
