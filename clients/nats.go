@@ -28,7 +28,7 @@ func main() {
 
 	// Use a WaitGroup to wait for a message to arrive
 	wg := sync.WaitGroup{}
-	wg.Add(1)
+	wg.Add(500000)
 
 	// Subscribe
 	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
