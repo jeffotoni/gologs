@@ -63,8 +63,8 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 	defer ch.Close()
 
 	args := make(amqp.Table)
-	args["x-message-ttl"] = int32(30000)
-	args["x-queue-mode"] = string("lazy")
+	args["message-ttl"] = int32(300000)
+	args["queue-mode"] = string("lazy")
 
 	// Declare a queue that will be created if not exists with some args
 	queue, err := ch.QueueDeclare(
