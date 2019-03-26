@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	queue   = "gologs"
+	queue   = ""
 	subject = "gologs"
 )
 
