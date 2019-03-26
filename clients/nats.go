@@ -6,7 +6,6 @@ package main
 
 import (
 	"log"
-	"time"
 
 	"github.com/jeffotoni/gologs/repo/postgres"
 	nats "github.com/nats-io/go-nats"
@@ -44,7 +43,7 @@ func main() {
 		// here insert db...
 		postgres.Insert5Log(string(msg.Data))
 		log.Printf("Received message %s\n", string(msg.Data))
-		time.Sleep(time.Millisecond * 200)
+		//time.Sleep(time.Millisecond * 200)
 	})
 
 	// Keep the connection alive
