@@ -8,6 +8,7 @@ import (
 	"log"
 	"runtime"
 
+	"github.com/jeffotoni/gologs/repo/postgres"
 	nats "github.com/nats-io/go-nats"
 )
 
@@ -27,6 +28,8 @@ func main() {
 	natsConnection.Subscribe("gologs", func(msg *nats.Msg) {
 		// Handle the message
 		log.Printf("Received message %s\n", string(msg.Data))
+		// here insert db...
+		postgres.Insert5Log(string(msg.Data))
 	})
 
 	// Keep the connection alive
