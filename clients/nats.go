@@ -8,7 +8,8 @@ import (
 	"log"
 	"sync"
 
-	"github.com/jeffotoni/gologs/repo/postgres"
+	//"github.com/jeffotoni/gologs/repo/postgres"
+	"github.com/jeffotoni/gologs/pkg/redis"
 	nats "github.com/nats-io/go-nats"
 )
 
@@ -26,6 +27,8 @@ func main() {
 	log.Printf("Subscribing to subject 'gologs'\n")
 	defer nc.Close()
 
+	var count int
+
 	// Use a WaitGroup to wait for a message to arrive
 	wg := sync.WaitGroup{}
 	wg.Add(500000)
@@ -33,10 +36,12 @@ func main() {
 	// Subscribe
 	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
 		log.Printf("Received message %s\n", string(msg.Data))
-		go postgres.Insert5Log(string(msg.Data))
+		//postgres.Insert5Log(string(msg.Data))
+		redis.SaveRedis(count, string(msg.Data))
+		count++
 		wg.Done()
 	}); err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
 	// Wait for a message to come in
