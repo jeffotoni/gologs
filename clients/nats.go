@@ -19,32 +19,44 @@ const (
 func main() {
 
 	// Create server connection
-	natsConnection, _ := nats.Connect(nats.DefaultURL)
+	nc, _ := nats.Connect(nats.DefaultURL)
 	log.Println("Connected to " + nats.DefaultURL)
 
 	// Subscribe to subject
 	log.Printf("Subscribing to subject 'gologs'\n")
-	// natsConnection.Subscribe("gologs", func(msg *nats.Msg) {
+	for i := 0; i < 500000; i++ {
+		// Simple Sync Subscriber
+		sub, err := nc.SubscribeSync("gologs")
+		m, err := sub.NextMsg(200)
+		if err == nil {
+			// 	// Handle the message
+			log.Printf("Subscribed message in Worker 1: %s\n", m.Data)
+			postgres.Insert5Log(string(m.Data))
+		}
+	}
+
+	// nc.Subscribe("gologs", func(msg *nats.Msg) {
 	// 	// Handle the message
-	// 	log.Printf("Received message %s\n", string(msg.Data))
 	// 	// here insert db...
 	// 	postgres.Insert5Log(string(msg.Data))
+	// 	log.Printf("Received message %s\n", string(msg.Data))
+	// 	time.Sleep(time.Millisecond * 200)
 	// })
 
 	// Keep the connection alive
 	// Subscribe to subject
-	natsConnection.QueueSubscribe(subject, queue, func(msg *nats.Msg) {
-		// 	time.Sleep(time.Millisecond * 100)
-		log.Printf("Received message %s\n", string(msg.Data))
-		// here insert db...
-		postgres.Insert5Log(string(msg.Data))
-		//eventStore := pb.EventStore{}
-		//err := proto.Unmarshal(msg.Data, &eventStore)
-		// if err == nil {
-		// 	// Handle the message
-		// 	log.Printf("Subscribed message in Worker 1: %+v\n", eventStore)
-		// }
-	})
+	// nc.QueueSubscribe(subject, queue, func(msg *nats.Msg) {
+	// 	// 	time.Sleep(time.Millisecond * 100)
+	// 	log.Printf("Received message %s\n", string(msg.Data))
+	// 	// here insert db...
+	// 	postgres.Insert5Log(string(msg.Data))
+	// 	//eventStore := pb.EventStore{}
+	// 	//err := proto.Unmarshal(msg.Data, &eventStore)
+	// 	// if err == nil {
+	// 	// 	// Handle the message
+	// 	// 	log.Printf("Subscribed message in Worker 1: %+v\n", eventStore)
+	// 	// }
+	// })
 
 	// Keep the connection alive
 	// runtime.Goexit()
@@ -64,7 +76,7 @@ func main() {
 	// 	wg.Add(1)
 
 	// 	// Subscribe
-	// 	if _, err := natsConnection.Subscribe("gologs", func(msg *nats.Msg) {
+	// 	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
 	// 		postgres.Insert5Log(string(msg.Data))
 	// 		log.Printf("Received message %s\n", string(msg.Data))
 	// 		wg.Done()
@@ -78,5 +90,5 @@ func main() {
 	// }
 
 	// Close the connection
-	// natsConnection.Close()
+	// nc.Close()
 }
