@@ -11,7 +11,9 @@ import (
 	"regexp"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
-	"github.com/jeffotoni/gologs/pkg/rabbitqm"
+	//"github.com/jeffotoni/gologs/pkg/rabbitqm"
+	//"github.com/jeffotoni/gologs/pkg/redis"
+	"github.com/jeffotoni/gologs/pkg/mongo"
 )
 
 var jobs = make(chan string)
@@ -44,7 +46,8 @@ func Consumer() {
 				// if repo.Map(count, j) {
 				// if repo.Insert5Log(j) {
 				// if redis.SaveRedis(count, j) {
-				if rabbitqm.SendV2(count, j) {
+				// if rabbitqm.SendV2(count, j) {
+				if mongo.InsertOne(count, j) {
 					//if true {
 					// Just for debug
 					// And test
