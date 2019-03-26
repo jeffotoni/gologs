@@ -45,7 +45,7 @@ func main() {
 		// here insert db...
 		log.Printf("Received message %s\n", string(msg.Data))
 		postgres.Insert5Log(string(msg.Data))
-		time.Sleep(time.Millisecond * 200)
+		time.Sleep(time.Millisecond * 10)
 	})
 
 	runtime.Goexit()
