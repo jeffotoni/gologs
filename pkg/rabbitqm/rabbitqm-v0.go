@@ -62,6 +62,10 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 	ch, err := m.conn.Channel() // Get a channel from the connection
 	defer ch.Close()
 
+	args := make(amqp.Table)
+	args["x-message-ttl"] = int32(300)
+	args["x-queue-mode"] = string("lazy")
+
 	// Declare a queue that will be created if not exists with some args
 	queue, err := ch.QueueDeclare(
 		queueName, // our queue name
@@ -69,7 +73,7 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 		false,     // delete when unused
 		false,     // exclusive
 		false,     // no-wait
-		nil,       // arguments
+		args,      // arguments
 	)
 
 	// Publishes a message onto the queue.
