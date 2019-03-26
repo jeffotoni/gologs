@@ -33,7 +33,7 @@ func main() {
 	// Subscribe
 	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
 		log.Printf("Received message %s\n", string(msg.Data))
-		postgres.Insert5Log(string(msg.Data))
+		go postgres.Insert5Log(string(msg.Data))
 		wg.Done()
 	}); err != nil {
 		log.Println(err)
