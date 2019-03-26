@@ -23,16 +23,11 @@ func main() {
 	log.Println("Connected to " + nats.DefaultURL)
 
 	// Subscribe to subject
-	natsConnection.QueueSubscribe(subject, queue, func(msg *nats.Msg) {
+	log.Printf("Subscribing to subject 'foo'\n")
+	natsConnection.Subscribe("foo", func(msg *nats.Msg) {
 
-		log.Printf("Subscribed message in Worker 1: %+v\n", msg.Data)
-
-		//eventStore := pb.EventStore{}
-		//err := proto.Unmarshal(msg.Data, &eventStore)
-		// if err == nil {
-		// 	// Handle the message
-		// 	log.Printf("Subscribed message in Worker 1: %+v\n", eventStore)
-		// }
+		// Handle the message
+		log.Printf("Received message %s\n", string(msg.Data))
 	})
 
 	// Keep the connection alive
