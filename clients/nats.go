@@ -6,8 +6,7 @@ package main
 
 import (
 	"log"
-	"runtime"
-	"time"
+	"sync"
 
 	"github.com/jeffotoni/gologs/repo/postgres"
 	nats "github.com/nats-io/go-nats"
@@ -23,9 +22,29 @@ func main() {
 	// Create server connection
 	nc, _ := nats.Connect(nats.DefaultURL)
 	log.Println("Connected to " + nats.DefaultURL)
-
 	// Subscribe to subject
 	log.Printf("Subscribing to subject 'gologs'\n")
+	defer nc.Close()
+
+	// Use a WaitGroup to wait for a message to arrive
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	// Subscribe
+	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
+		log.Printf("Received message %s\n", string(msg.Data))
+		postgres.Insert5Log(string(msg.Data))
+		wg.Done()
+	}); err != nil {
+		log.Println(err)
+	}
+
+	// Wait for a message to come in
+	wg.Wait()
+
+	// Close the connection
+	nc.Close()
+
 	//for i := 0; i < 500000; i++ {
 	// Simple Sync Subscriber
 	// sub, err := nc.SubscribeSync("gologs")
@@ -40,15 +59,15 @@ func main() {
 
 	//}
 
-	nc.Subscribe(subject, func(msg *nats.Msg) {
-		// Handle the message
-		// here insert db...
-		log.Printf("Received message %s\n", string(msg.Data))
-		postgres.Insert5Log(string(msg.Data))
-		time.Sleep(time.Millisecond * 10)
-	})
+	// nc.Subscribe(subject, func(msg *nats.Msg) {
+	// 	// Handle the message
+	// 	// here insert db...
+	// 	log.Printf("Received message %s\n", string(msg.Data))
+	// 	postgres.Insert5Log(string(msg.Data))
+	// 	//time.Sleep(time.Millisecond * 10)
+	// })
 
-	runtime.Goexit()
+	// runtime.Goexit()
 
 	// Keep the connection alive
 	// Subscribe to subject
