@@ -1,6 +1,8 @@
 package nats
 
 import (
+	"log"
+
 	nats "github.com/nats-io/go-nats"
 )
 
@@ -10,7 +12,11 @@ func Publish(jsonStr string) bool {
 	nc, _ := nats.Connect(nats.DefaultURL)
 
 	// Simple Publisher
-	nc.Publish("gologs", []byte(jsonStr))
+	//nc.Publish("gologs", []byte(jsonStr))
+
+	if err := nc.Publish("gologs", []byte(jsonStr)); err != nil {
+		log.Println(err)
+	}
 
 	// Simple Async Subscriber
 	// nc.Subscribe("foo", func(m *nats.Msg) {
@@ -45,7 +51,9 @@ func Publish(jsonStr string) bool {
 	// nc.Drain()
 
 	// Close connection
-	nc.Close()
+	defer nc.Close()
+
+	nc.Flush()
 
 	return true
 }
