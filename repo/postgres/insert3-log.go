@@ -2,7 +2,7 @@
 // @jeffotoni
 // 2019-01-04
 
-package repo
+package postgres
 
 import (
 	"log"
