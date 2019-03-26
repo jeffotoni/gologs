@@ -11,10 +11,11 @@ import (
 	"regexp"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
-	"github.com/jeffotoni/gologs/repo/postgres"
+	//"github.com/jeffotoni/gologs/repo/postgres"
 	// "github.com/jeffotoni/gologs/pkg/rabbitqm"
 	// "github.com/jeffotoni/gologs/pkg/redis"
 	// "github.com/jeffotoni/gologs/pkg/mongo"
+	"github.com/jeffotoni/gologs/pkg/nats"
 )
 
 var jobs = make(chan string)
@@ -45,16 +46,17 @@ func Consumer() {
 			if okay {
 				//if true {
 				// if repo.Map(count, j) {
-				if postgres.Insert5Log(j) {
-					// if redis.SaveRedis(count, j) {
-					// if rabbitqm.SendV2(count, j) {
-					// if mongo.InsertOne(count, j) {
+				// if postgres.Insert5Log(j) {
+				// if redis.SaveRedis(count, j) {
+				// if rabbitqm.SendV2(count, j) {
+				// if mongo.InsertOne(count, j) {
+				if nats.Publish(j) {
 					//if true {
 					// Just for debug
 					// And test
 					// if DEBUG {
-					count++
-					//count2++
+					// count++
+					// count2++
 
 					// if count2 == 20000 {
 					// 	time.Sleep(time.Second * 5)
