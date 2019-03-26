@@ -7,6 +7,7 @@ package main
 import (
 	"log"
 	"sync"
+	"time"
 
 	"github.com/jeffotoni/gologs/repo/postgres"
 	nats "github.com/nats-io/go-nats"
@@ -58,21 +59,25 @@ func main() {
 	// defer nc.Close()
 
 	// Use a WaitGroup to wait for a message to arrive
-	wg := sync.WaitGroup{}
-	wg.Add(1)
 
-	// Subscribe
-	if _, err := natsConnection.Subscribe("gologs", func(msg *nats.Msg) {
-		postgres.Insert5Log(string(msg.Data))
-		log.Printf("Received message %s\n", string(msg.Data))
-		wg.Done()
-	}); err != nil {
-		log.Println(err)
-		return
+	for {
+		time.Sleep(time.Millisecond * 100)
+		wg := sync.WaitGroup{}
+		wg.Add(1)
+
+		// Subscribe
+		if _, err := natsConnection.Subscribe("gologs", func(msg *nats.Msg) {
+			postgres.Insert5Log(string(msg.Data))
+			log.Printf("Received message %s\n", string(msg.Data))
+			wg.Done()
+		}); err != nil {
+			log.Println(err)
+			return
+		}
+
+		// Wait for a message to come in
+		wg.Wait()
 	}
-
-	// Wait for a message to come in
-	wg.Wait()
 
 	// Close the connection
 	natsConnection.Close()
