@@ -6,36 +6,61 @@ package main
 
 import (
 	"log"
-	"sync"
+	"runtime"
 
 	nats "github.com/nats-io/go-nats"
 )
 
+const (
+	queue   = "gologs"
+	subject = "gologs"
+)
+
 func main() {
 
-	nc, err := nats.Connect(nats.DefaultURL)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	defer nc.Close()
+	// Create server connection
+	natsConnection, _ := nats.Connect(nats.DefaultURL)
+	log.Println("Connected to " + nats.DefaultURL)
 
-	// Use a WaitGroup to wait for a message to arrive
-	wg := sync.WaitGroup{}
-	wg.Add(1)
+	// Subscribe to subject
+	natsConnection.QueueSubscribe(subject, queue, func(msg *nats.Msg) {
 
-	// Subscribe
-	if _, err := nc.Subscribe("gologs", func(m *nats.Msg) {
-		println(string(m.Data))
-		wg.Done()
-	}); err != nil {
-		log.Println(err)
-		return
-	}
+		log.Printf("Subscribed message in Worker 1: %+v\n", msg.Data)
 
-	// Wait for a message to come in
-	wg.Wait()
+		//eventStore := pb.EventStore{}
+		//err := proto.Unmarshal(msg.Data, &eventStore)
+		// if err == nil {
+		// 	// Handle the message
+		// 	log.Printf("Subscribed message in Worker 1: %+v\n", eventStore)
+		// }
+	})
 
-	// Close the connection
-	nc.Close()
+	// Keep the connection alive
+	runtime.Goexit()
+
+	// nc, err := nats.Connect(nats.DefaultURL)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+	// defer nc.Close()
+
+	// // Use a WaitGroup to wait for a message to arrive
+	// wg := sync.WaitGroup{}
+	// wg.Add(1)
+
+	// // Subscribe
+	// if _, err := nc.Subscribe("gologs", func(m *nats.Msg) {
+	// 	println(string(m.Data))
+	// 	wg.Done()
+	// }); err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+
+	// // Wait for a message to come in
+	// wg.Wait()
+
+	// // Close the connection
+	// nc.Close()
 }

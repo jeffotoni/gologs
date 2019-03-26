@@ -2,6 +2,7 @@ module github.com/jeffotoni/gologs
 
 require (
 	github.com/go-redis/redis v6.15.2+incompatible
+	github.com/golang/protobuf v1.3.1
 	github.com/lib/pq v1.0.0
 	github.com/nats-io/go-nats v1.7.2
 	github.com/nats-io/nkeys v0.0.2 // indirect
