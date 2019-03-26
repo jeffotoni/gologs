@@ -30,28 +30,30 @@ func main() {
 	log.Printf("Subscribing to subject 'gologs'\n")
 	defer nc.Close()
 
-	// var count int
-	// Use a WaitGroup to wait for a message to arrive
-	wg := sync.WaitGroup{}
-	wg.Add(500000)
+	go func() {
+		// var count int
+		// Use a WaitGroup to wait for a message to arrive
+		wg := sync.WaitGroup{}
+		wg.Add(500000)
 
-	// Subscribe
-	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
-		log.Printf("Received message %s\n", string(msg.Data))
-		chanpg <- string(msg.Data)
-		//redis.SaveRedis(count, string(msg.Data))
-		// count++
-		wg.Done()
-	}); err != nil {
-		log.Fatal(err)
-	}
+		// Subscribe
+		if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
+			log.Printf("Received message %s\n", string(msg.Data))
+			chanpg <- string(msg.Data)
+			//redis.SaveRedis(count, string(msg.Data))
+			// count++
+			wg.Done()
+		}); err != nil {
+			log.Fatal(err)
+		}
 
-	// Wait for a message to come in
-	wg.Wait()
+		// Wait for a message to come in
+		wg.Wait()
 
-	// Close the connection
-	nc.Close()
+		// Close the connection
+		nc.Close()
 
+	}()
 	// close(chanpg)
 
 	go func() {
