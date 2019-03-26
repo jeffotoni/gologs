@@ -8,8 +8,9 @@ import (
 	"log"
 	"sync"
 
-	//"github.com/jeffotoni/gologs/repo/postgres"
-	"github.com/jeffotoni/gologs/pkg/redis"
+	"github.com/jeffotoni/gologs/repo/postgres"
+
+	//"github.com/jeffotoni/gologs/pkg/redis"
 	nats "github.com/nats-io/go-nats"
 )
 
@@ -20,6 +21,8 @@ const (
 
 func main() {
 
+	chanpg := make(chan string, 5000000)
+
 	// Create server connection
 	nc, _ := nats.Connect(nats.DefaultURL)
 	log.Println("Connected to " + nats.DefaultURL)
@@ -27,8 +30,7 @@ func main() {
 	log.Printf("Subscribing to subject 'gologs'\n")
 	defer nc.Close()
 
-	var count int
-
+	// var count int
 	// Use a WaitGroup to wait for a message to arrive
 	wg := sync.WaitGroup{}
 	wg.Add(500000)
@@ -36,9 +38,9 @@ func main() {
 	// Subscribe
 	if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
 		log.Printf("Received message %s\n", string(msg.Data))
-		//postgres.Insert5Log(string(msg.Data))
-		redis.SaveRedis(count, string(msg.Data))
-		count++
+		chanpg <- string(msg.Data)
+		//redis.SaveRedis(count, string(msg.Data))
+		// count++
 		wg.Done()
 	}); err != nil {
 		log.Fatal(err)
@@ -49,6 +51,20 @@ func main() {
 
 	// Close the connection
 	nc.Close()
+
+	// close(chanpg)
+
+	go func() {
+		for {
+			select {
+			case cmsgJson := <-chanpg:
+				postgres.Insert5Log(cmsgJson)
+			}
+		}
+		// for cmsgJson := range chanpg {
+		// 	postgres.Insert5Log(cmsgJson)
+		// }
+	}()
 
 	//for i := 0; i < 500000; i++ {
 	// Simple Sync Subscriber
