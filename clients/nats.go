@@ -6,6 +6,8 @@ package main
 
 import (
 	"log"
+	"runtime"
+	"time"
 
 	"github.com/jeffotoni/gologs/repo/postgres"
 	nats "github.com/nats-io/go-nats"
@@ -38,13 +40,15 @@ func main() {
 
 	//}
 
-	nc.Subscribe("gologs", func(msg *nats.Msg) {
+	nc.Subscribe(subject, func(msg *nats.Msg) {
 		// Handle the message
 		// here insert db...
-		postgres.Insert5Log(string(msg.Data))
 		log.Printf("Received message %s\n", string(msg.Data))
-		//time.Sleep(time.Millisecond * 200)
+		postgres.Insert5Log(string(msg.Data))
+		time.Sleep(time.Millisecond * 200)
 	})
+
+	runtime.Goexit()
 
 	// Keep the connection alive
 	// Subscribe to subject
@@ -93,5 +97,5 @@ func main() {
 	// }
 
 	// Close the connection
-	nc.Close()
+	// nc.Close()
 }
