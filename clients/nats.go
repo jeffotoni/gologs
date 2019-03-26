@@ -33,6 +33,10 @@ func main() {
 		log.Printf("Subscribed message in Worker 1: %s\n", m.Data)
 		postgres.Insert5Log(string(m.Data))
 	}
+	sub.Unsubscribe()
+
+	nc.Close()
+
 	//}
 
 	// nc.Subscribe("gologs", func(msg *nats.Msg) {
