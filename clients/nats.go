@@ -39,7 +39,7 @@ func main() {
 
 	//}
 
-	nc.Unsubscribe("gologs", func(msg *nats.Msg) {
+	nc.Subscribe("gologs", func(msg *nats.Msg) {
 		// Handle the message
 		// here insert db...
 		postgres.Insert5Log(string(msg.Data))
@@ -94,5 +94,5 @@ func main() {
 	// }
 
 	// Close the connection
-	// nc.Close()
+	nc.Close()
 }
