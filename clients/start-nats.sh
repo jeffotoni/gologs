@@ -1,5 +1,5 @@
 #!/bin/bash
-GOOS=linux go build -ldflags="-s -w" -o nats nats.go
+GOOS=linux go build -ldflags="-s -w" -o nats-consumer nats.go
 
 ### GMAIL SMTP
 export GMAIL_PASSWORD=xxxxxx
@@ -16,4 +16,4 @@ export DEBUG=false
 export DEBUG_REQ=500000
 
 export MEMORY=200000
-./nats
+./nats-consumer
