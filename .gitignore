@@ -5,4 +5,4 @@ start-local.sh
 .env
 env
 gologs
-client/nats
+clients/nats

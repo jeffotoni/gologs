@@ -24,16 +24,16 @@ func main() {
 
 	// Subscribe to subject
 	log.Printf("Subscribing to subject 'gologs'\n")
-	for i := 0; i < 500000; i++ {
-		// Simple Sync Subscriber
-		sub, err := nc.SubscribeSync("gologs")
-		m, err := sub.NextMsg(200)
-		if err == nil {
-			// 	// Handle the message
-			log.Printf("Subscribed message in Worker 1: %s\n", m.Data)
-			postgres.Insert5Log(string(m.Data))
-		}
+	//for i := 0; i < 500000; i++ {
+	// Simple Sync Subscriber
+	sub, err := nc.SubscribeSync("gologs")
+	m, err := sub.NextMsg(200)
+	if err == nil {
+		// 	// Handle the message
+		log.Printf("Subscribed message in Worker 1: %s\n", m.Data)
+		postgres.Insert5Log(string(m.Data))
 	}
+	//}
 
 	// nc.Subscribe("gologs", func(msg *nats.Msg) {
 	// 	// Handle the message
