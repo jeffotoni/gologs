@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"sync"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
 	//"github.com/jeffotoni/gologs/repo/postgres"
@@ -47,12 +46,12 @@ func Consumer() {
 			select {
 			case j := <-jobs:
 
-				wg := sync.WaitGroup{}
-				wg.Add(1)
+				// wg := sync.WaitGroup{}
+				// wg.Add(1)
 
 				if nats.Publish(j) {
 
-					wg.Done()
+					// wg.Done()
 
 					// only enabled
 					if len(gmail.GmailUser) > 0 &&
@@ -70,7 +69,7 @@ func Consumer() {
 					}
 				}
 
-				wg.Wait()
+				// wg.Wait()
 			}
 
 			// time.Sleep(time.Second * 2)
