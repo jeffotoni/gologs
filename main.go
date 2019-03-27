@@ -19,19 +19,19 @@ func main() {
 
 	done := make(chan struct{})
 
+	// Receives job
+	// from queue
+	// and executes
+	go server.Consumer()
+
+	// consumer
+	go nats.SubscribeAsync()
+
 	// Rpc open
 	go server.Rpc()
 
 	// Tcp open
 	go server.Tcp()
-
-	// consumer
-	go nats.SubscribeAsync()
-
-	// Receives job
-	// from queue
-	// and executes
-	go server.Consumer()
 
 	var gracefulStop = make(chan os.Signal)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
