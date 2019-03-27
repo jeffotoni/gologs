@@ -5,10 +5,8 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"sync"
-	"time"
 
 	"github.com/jeffotoni/gologs/repo/postgres"
 
@@ -23,7 +21,7 @@ const (
 
 func main() {
 
-	start := time.Now()
+	//start := time.Now()
 	chanpg := make(chan string, 5000000)
 
 	// Create server connection
@@ -58,23 +56,19 @@ func main() {
 
 	}()
 	// close(chanpg)
-	var count int
+
 	//go func() {
-FORLABEL:
+
 	for {
 		select {
 		case cmsgJson := <-chanpg:
 			postgres.Insert5Log(cmsgJson)
-			if count >= 500000 {
-				break FORLABEL
-			}
-			count++
 		}
 	}
 
-	end := time.Now()
-	diff := end.Sub(start)
-	fmt.Println("fim: ", diff)
+	// end := time.Now()
+	// diff := end.Sub(start)
+	// fmt.Println("fim: ", diff)
 
 	// for cmsgJson := range chanpg {
 	// 	postgres.Insert5Log(cmsgJson)
