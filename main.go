@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jeffotoni/gologs/pkg/nats"
 	"github.com/jeffotoni/gologs/pkg/server"
 )
 
@@ -23,6 +24,9 @@ func main() {
 
 	// Tcp open
 	go server.Tcp()
+
+	// consumer
+	go nats.SubscribeAsync()
 
 	// Receives job
 	// from queue
