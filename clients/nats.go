@@ -60,15 +60,15 @@ func main() {
 	// close(chanpg)
 	var count int
 	//go func() {
+FORLABEL:
 	for {
 		select {
 		case cmsgJson := <-chanpg:
 			postgres.Insert5Log(cmsgJson)
+			if count >= 500000 {
+				break FORLABEL
+			}
 			count++
-		}
-
-		if count > 500001 {
-			break
 		}
 	}
 
