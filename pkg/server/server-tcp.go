@@ -63,7 +63,7 @@ func handleRequest(conn net.Conn) {
   //log.Println("msg: ", fub)
 
   // Goroutine Queue
-  go Publish(bufclean)
+  go Producer(bufclean)
 
   // Send a response back to person contacting us.
   conn.Write([]byte("ok"))

@@ -30,7 +30,7 @@ func (t *Receive) Json(args *Args, reply *string) error {
 	*reply = "ok"
 	// log.Println("Server Receive: ", args.Json)
 	// add msg
-	go Publish(args.Json)
+	go Producer(args.Json)
 	return nil
 }
 

@@ -26,7 +26,7 @@ var count int
 
 var count2 int
 
-func Publish(okay string) {
+func Producer(okay string) {
 	//time.Sleep(time.Millisecond * 20)
 	if len(okay) <= 0 {
 		return

@@ -6,6 +6,7 @@ package main
 
 import (
 	"log"
+	"sync"
 
 	"github.com/jeffotoni/gologs/repo/postgres"
 
@@ -16,12 +17,13 @@ import (
 const (
 	queue   = ""
 	subject = "gologs"
+	limit   = 10000000 // 10millions
 )
 
 func main() {
 
 	//start := time.Now()
-	chanpg := make(chan string)
+	chanpg := make(chan string, limit)
 
 	// Create server connection
 	nc, _ := nats.Connect(nats.DefaultURL)
@@ -32,10 +34,9 @@ func main() {
 
 	go func() {
 		// var count int
-
 		// Use a WaitGroup to wait for a message to arrive
-		// wg := sync.WaitGroup{}
-		// wg.Add(500000)
+		wg := sync.WaitGroup{}
+		wg.Add(limit)
 
 		// Subscribe
 		if _, err := nc.Subscribe("gologs", func(msg *nats.Msg) {
@@ -43,20 +44,19 @@ func main() {
 			chanpg <- string(msg.Data)
 			//redis.SaveRedis(count, string(msg.Data))
 			// count++
-			// wg.Done()
+			wg.Done()
 		}); err != nil {
 			log.Fatal(err)
 		}
 
 		// Wait for a message to come in
-		// wg.Wait()
+		wg.Wait()
 
 		// Close the connection
-		// nc.Close()
+		nc.Close()
 
 	}()
 	// close(chanpg)
-
 	//go func() {
 
 	for {
