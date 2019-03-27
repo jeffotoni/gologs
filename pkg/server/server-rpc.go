@@ -28,8 +28,8 @@ func (t *Receive) Json(args *Args, reply *string) error {
 	}
 	//*reply = `{"status":"ok", "msg":"Receive json"}`
 	*reply = "ok"
-	// log.Println("Server Receive: ", args.Json)
-	// add msg
+
+	// without goroutine
 	Producer(args.Json)
 	return nil
 }
@@ -54,7 +54,8 @@ func Rpc() {
 			if DEBUG {
 				log.Printf("New connection established in rpc server\n")
 			}
-			go serverRpc.ServeCodec(jsonrpc.NewServerCodec(conn))
+			// without goroutine
+			serverRpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 		}
 	}
 }
