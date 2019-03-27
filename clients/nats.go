@@ -52,7 +52,7 @@ func main() {
 		// wg.Wait()
 
 		// Close the connection
-		nc.Close()
+		// nc.Close()
 
 	}()
 	// close(chanpg)
