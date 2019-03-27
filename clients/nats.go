@@ -56,17 +56,17 @@ func main() {
 	}()
 	// close(chanpg)
 
-	go func() {
-		for {
-			select {
-			case cmsgJson := <-chanpg:
-				postgres.Insert5Log(cmsgJson)
-			}
+	//go func() {
+	for {
+		select {
+		case cmsgJson := <-chanpg:
+			postgres.Insert5Log(cmsgJson)
 		}
-		// for cmsgJson := range chanpg {
-		// 	postgres.Insert5Log(cmsgJson)
-		// }
-	}()
+	}
+	// for cmsgJson := range chanpg {
+	// 	postgres.Insert5Log(cmsgJson)
+	// }
+	//}()
 
 	//for i := 0; i < 500000; i++ {
 	// Simple Sync Subscriber
