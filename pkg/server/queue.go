@@ -26,6 +26,12 @@ var count int
 
 var count2 int
 
+func init() {
+
+	// consumer
+	go nats.SubscribeAsync()
+}
+
 func Producer(okay string) {
 	//time.Sleep(time.Millisecond * 20)
 	if len(okay) <= 0 {
