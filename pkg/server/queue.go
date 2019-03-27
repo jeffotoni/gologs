@@ -18,7 +18,9 @@ import (
 	"github.com/jeffotoni/gologs/pkg/nats"
 )
 
-var jobs = make(chan string)
+const limit = 10000000 // 10millions
+
+var jobs = make(chan string, limit)
 
 var done = make(chan bool)
 
@@ -39,79 +41,98 @@ func Consumer() {
 	// from `jobs` with `j, okay := <-jobs`.
 	// We use this to notify on `done` when we've worked
 	// all our jobs, but never all jobs
-	go func() {
-		for {
-			// time.Sleep(time.Second * 2)
-			j, okay := <-jobs
-			if okay {
-				//if true {
-				// if repo.Map(count, j) {
-				// if postgres.Insert5Log(j) {
-				// if redis.SaveRedis(count, j) {
-				// if rabbitqm.SendV2(count, j) {
-				// if mongo.InsertOne(count, j) {
-				if nats.Publish(j) {
-					//if true {
-					// Just for debug
-					// And test
-					// if DEBUG {
-					// count++
-					// count2++
-
-					// if count2 == 20000 {
-					// 	time.Sleep(time.Second * 5)
-					// 	count2 = 0
-					// }
-					// 	if count == 1 {
-					// 		log.Println("start save Map")
-					// 	}
-					// 	if count == DEBUG_REQ {
-					// 		log.Println("fim save Map Qtn:", count)
-					// 		// start save db ..
-					// 		log.Println("start save Postgres")
-					// 		go repo.SavePg()
-					// 		count = 0
-					// 	}
-					// } else {
-					// 	//repo.Insert5Log(j)
-					// 	// if prod
-					// 	count++
-					// 	count2++
-					// 	if count2 == MEMORY {
-					// 		log.Println("start save Redis!")
-					// 		go repo.SaveRedis()
-					// 		count2 = 0
-					// 		time.Sleep(time.Millisecond * 3000)
-					// 	}
-					// }
-
-					if len(gmail.GmailUser) > 0 &&
-						len(gmail.GmailPassword) > 0 &&
-						len(gmail.EmailNotify) > 0 {
-						// log.Println("save postgres")
-						// rule critical
-						matched, err := regexp.MatchString("#critical#", j)
-						if err != nil {
-							log.Println("Error regexp critical", err)
-						}
-						if matched {
-							go notifyEmailDefault()
-						}
+	// go func() {
+	for {
+		select {
+		case j := <-jobs:
+			if nats.Publish(j) {
+				if len(gmail.GmailUser) > 0 &&
+					len(gmail.GmailPassword) > 0 &&
+					len(gmail.EmailNotify) > 0 {
+					// log.Println("save postgres")
+					// rule critical
+					matched, err := regexp.MatchString("#critical#", j)
+					if err != nil {
+						log.Println("Error regexp critical", err)
 					}
-
-				} else {
-					log.Println("received job, error processing service send Map: \n", j)
+					if matched {
+						go notifyEmailDefault()
+					}
 				}
-				// here send Postgres or ElasticSearch or SQS or S3.
-				// depending on the message sending email
-			} else {
-				// never
-				log.Println("received all jobs")
-				done <- true
-				return
 			}
 		}
-	}()
+
+		// time.Sleep(time.Second * 2)
+		//j, okay := <-jobs
+		// if okay {
+		// 	//if true {
+		// 	// if repo.Map(count, j) {
+		// 	// if postgres.Insert5Log(j) {
+		// 	// if redis.SaveRedis(count, j) {
+		// 	// if rabbitqm.SendV2(count, j) {
+		// 	// if mongo.InsertOne(count, j) {
+		// 	if nats.Publish(j) {
+		// 		//if true {
+		// 		// Just for debug
+		// 		// And test
+		// 		// if DEBUG {
+		// 		// count++
+		// 		// count2++
+
+		// 		// if count2 == 20000 {
+		// 		// 	time.Sleep(time.Second * 5)
+		// 		// 	count2 = 0
+		// 		// }
+		// 		// 	if count == 1 {
+		// 		// 		log.Println("start save Map")
+		// 		// 	}
+		// 		// 	if count == DEBUG_REQ {
+		// 		// 		log.Println("fim save Map Qtn:", count)
+		// 		// 		// start save db ..
+		// 		// 		log.Println("start save Postgres")
+		// 		// 		go repo.SavePg()
+		// 		// 		count = 0
+		// 		// 	}
+		// 		// } else {
+		// 		// 	//repo.Insert5Log(j)
+		// 		// 	// if prod
+		// 		// 	count++
+		// 		// 	count2++
+		// 		// 	if count2 == MEMORY {
+		// 		// 		log.Println("start save Redis!")
+		// 		// 		go repo.SaveRedis()
+		// 		// 		count2 = 0
+		// 		// 		time.Sleep(time.Millisecond * 3000)
+		// 		// 	}
+		// 		// }
+
+		// 		if len(gmail.GmailUser) > 0 &&
+		// 			len(gmail.GmailPassword) > 0 &&
+		// 			len(gmail.EmailNotify) > 0 {
+		// 			// log.Println("save postgres")
+		// 			// rule critical
+		// 			matched, err := regexp.MatchString("#critical#", j)
+		// 			if err != nil {
+		// 				log.Println("Error regexp critical", err)
+		// 			}
+		// 			if matched {
+		// 				go notifyEmailDefault()
+		// 			}
+		// 		}
+
+		// 	} else {
+		// 		log.Println("received job, error processing service send Map: \n", j)
+		// 	}
+		// 	// here send Postgres or ElasticSearch or SQS or S3.
+		// 	// depending on the message sending email
+		// } else {
+		// 	// never
+		// 	log.Println("received all jobs")
+		// 	done <- true
+		// 	return
+		// }
+	}
+	// }()
 }
 
 // you can parameterize
