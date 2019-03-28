@@ -25,7 +25,7 @@ func main() {
     jobs := make(chan string, 500000)
     results := make(chan string, 500000)
 
-    for w := 1; w <= 2000; w++ {
+    for w := 1; w <= 6000; w++ {
         go worker(w, jobs, results)
     }
 
