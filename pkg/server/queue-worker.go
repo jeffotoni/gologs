@@ -17,9 +17,9 @@ import (
 	// "github.com/jeffotoni/gologs/pkg/mongo"
 )
 
-var wjobs = make(chan string, limit)
+var wjobs = make(chan string)
 
-var results = make(chan string, limit)
+var results = make(chan string)
 
 func init() {
 	loadWorker()
@@ -40,7 +40,7 @@ func worker(id int, wjobs <-chan string, results chan<- string) {
 }
 
 func loadWorker() {
-	for w := 1; w <= 6000; w++ {
+	for w := 1; w <= 3000; w++ {
 		go worker(w, wjobs, results)
 	}
 

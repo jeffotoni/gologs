@@ -37,7 +37,7 @@ func Tcp() {
       os.Exit(0)
     }
     // Handle connections in a new goroutine.
-    go handleRequest(conn)
+    handleRequest(conn)
   }
 }
 
@@ -63,7 +63,7 @@ func handleRequest(conn net.Conn) {
   //log.Println("msg: ", fub)
 
   // Goroutine Queue
-  go Producer(bufclean)
+  WProducer(bufclean)
 
   // Send a response back to person contacting us.
   conn.Write([]byte("ok"))

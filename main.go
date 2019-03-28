@@ -30,7 +30,7 @@ func main() {
 	go server.Rpc()
 
 	// Tcp open
-	// go server.Tcp()
+	go server.Tcp()
 
 	var gracefulStop = make(chan os.Signal)
 	signal.Notify(gracefulStop, syscall.SIGTERM)
