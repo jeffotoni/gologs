@@ -21,6 +21,10 @@ var wjobs = make(chan string, limit)
 
 var results = make(chan string, limit)
 
+func init() {
+	loadWorker()
+}
+
 func WProducer(jsonStr string) {
 	//time.Sleep(time.Millisecond * 20)
 	if len(jsonStr) <= 0 {
@@ -39,11 +43,11 @@ func loadWorker() {
 	for w := 1; w <= 6000; w++ {
 		go worker(w, wjobs, results)
 	}
+
+	WConsumer()
 }
 
 func WConsumer() {
-
-	loadWorker()
 
 	// Here's the worker goroutine. It repeatedly receives
 	// from `wjobs` with `j, okay := <-wjobs`.

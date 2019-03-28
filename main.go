@@ -21,7 +21,7 @@ func main() {
 	// Receives job
 	// from queue
 	// and executes
-	go server.WConsumer()
+	// go server.WConsumer()
 
 	// consumer
 	// go nats.SubscribeAsync()
