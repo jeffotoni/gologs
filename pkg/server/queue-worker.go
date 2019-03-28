@@ -49,36 +49,36 @@ func WConsumer() {
 	// from `wjobs` with `j, okay := <-wjobs`.
 	// We use this to notify on `done` when we've worked
 	// all our wjobs, but never all wjobs
-	//go func() {
-	for {
-		select {
-		case j := <-results:
+	go func() {
+		for {
+			select {
+			case j := <-results:
 
-			// wg := sync.WaitGroup{}
-			// wg.Add(1)
-			//if nats.Publish(j) {
-			if postgres.Insert5Log(j) {
-				// wg.Done()
-				// only enabled
-				if len(gmail.GmailUser) > 0 &&
-					len(gmail.GmailPassword) > 0 &&
-					len(gmail.EmailNotify) > 0 {
-					// log.Println("save postgres")
-					// rule critical
-					matched, err := regexp.MatchString("#critical#", j)
-					if err != nil {
-						log.Println("Error regexp critical", err)
-					}
-					if matched {
-						go wnotifyEmailDefault()
+				// wg := sync.WaitGroup{}
+				// wg.Add(1)
+				//if nats.Publish(j) {
+				if postgres.Insert5Log(j) {
+					// wg.Done()
+					// only enabled
+					if len(gmail.GmailUser) > 0 &&
+						len(gmail.GmailPassword) > 0 &&
+						len(gmail.EmailNotify) > 0 {
+						// log.Println("save postgres")
+						// rule critical
+						matched, err := regexp.MatchString("#critical#", j)
+						if err != nil {
+							log.Println("Error regexp critical", err)
+						}
+						if matched {
+							go wnotifyEmailDefault()
+						}
 					}
 				}
-			}
 
-			// wg.Wait()
+				// wg.Wait()
+			}
 		}
-	}
-	//}()
+	}()
 }
 
 // you can parameterize
