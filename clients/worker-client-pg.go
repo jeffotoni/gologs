@@ -32,11 +32,12 @@ func main() {
     for i := 1; i <= 500000; i++ {
         jobs <- `{"versão": "1.1","host": "exemplo.org","key":"producer_` + produc + `_` + strconv.Itoa(i) + `","level":"info","project":"my-project-here","short_message":"one msg here...","nível": 5,"some_info":"foo jeff"}`
     }
-    close(jobs)
 
+    //close(jobs)
     // Finally we collect all the results of the work.
     for a := 1; a <= 500000; a++ {
         cmsgJson := <-results
+        //fmt.Println("insert here:", a)
         postgres.Insert5Log(cmsgJson)
     }
 }

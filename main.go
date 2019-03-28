@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jeffotoni/gologs/pkg/nats"
 	"github.com/jeffotoni/gologs/pkg/server"
 )
 
@@ -25,7 +24,7 @@ func main() {
 	go server.Consumer()
 
 	// consumer
-	go nats.SubscribeAsync()
+	// go nats.SubscribeAsync()
 
 	// Rpc open
 	go server.Rpc()

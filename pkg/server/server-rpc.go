@@ -30,7 +30,7 @@ func (t *Receive) Json(args *Args, reply *string) error {
 	*reply = "ok"
 
 	// without goroutine
-	Producer(args.Json)
+	WProducer(args.Json)
 	return nil
 }
 
