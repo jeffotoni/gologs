@@ -1,3 +1,6 @@
 nats
 nats-consumer
+nats-producer
 worker-client-pg
+client-rpc
+client-tcp
