@@ -8,8 +8,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/jeffotoni/gologs/repo/postgres"
-
+	"github.com/jeffotoni/gologs/pkg/postgres"
 	//"github.com/jeffotoni/gologs/pkg/redis"
 	nats "github.com/nats-io/go-nats"
 )

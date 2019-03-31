@@ -7,7 +7,7 @@ package main
 import (
     "strconv"
 
-    "github.com/jeffotoni/gologs/repo/postgres"
+    "github.com/jeffotoni/gologs/pkg/postgres"
 )
 
 func worker(id int, jobs <-chan string, results chan<- string) {

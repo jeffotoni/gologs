@@ -4,7 +4,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/jeffotoni/gologs/repo/postgres"
+	"github.com/jeffotoni/gologs/pkg/postgres"
 	nats "github.com/nats-io/go-nats"
 )
 

@@ -22,6 +22,12 @@ func ServiceProducer(msgjson string) {
 	case "mongo":
 		MgProducer(msgjson)
 		break
+	case "maps":
+		MapsProducer(msgjson)
+		break
+	case "nats":
+		NatsProducer(msgjson)
+		break
 
 	default:
 		PgProducer(msgjson)

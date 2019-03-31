@@ -8,55 +8,57 @@ package server
 import (
 	"log"
 	"regexp"
+	"sync"
 
 	"github.com/jeffotoni/gologs/pkg/gmail"
-	"github.com/jeffotoni/gologs/pkg/rabbitqm"
+	"github.com/jeffotoni/gologs/pkg/nats"
 )
 
-var rbjobs = make(chan string)
+var natsjobs = make(chan string)
 
-var rbresults = make(chan string)
-
-var rabcount int
+var natsresults = make(chan string)
 
 func init() {
-	rbloadrbworker()
+	natsloadnatsworker()
 }
 
-func RbProducer(jsonStr string) {
+func NatsProducer(jsonStr string) {
 	//time.Sleep(time.Millisecond * 20)
 	if len(jsonStr) <= 0 {
 		return
 	}
-	rbjobs <- jsonStr
+	natsjobs <- jsonStr
 }
 
-func rbworker(id int, rbjobs <-chan string, rbresults chan<- string) {
-	for j := range rbjobs {
-		rbresults <- j
+func natsworker(id int, natsjobs <-chan string, natsresults chan<- string) {
+	for j := range natsjobs {
+		natsresults <- j
 	}
 }
 
-func rbloadrbworker() {
+func natsloadnatsworker() {
 	for w := 1; w <= 3000; w++ {
-		go rbworker(w, rbjobs, rbresults)
+		go natsworker(w, natsjobs, natsresults)
 	}
 
-	RbConsumer()
+	NatsConsumer()
 }
 
-func RbConsumer() {
+func NatsConsumer() {
 
 	// Here's the worker goroutine. It repeatedly receives
-	// from `rbjobs` with `j, okay := <-rbjobs`.
+	// from `natsjobs` with `j, okay := <-natsjobs`.
 	// We use this to notify on `done` when we've worked
-	// all our rbjobs, but never all rbjobs
+	// all our natsjobs, but never all natsjobs
 	go func() {
 		for {
 			select {
-			case j := <-rbresults:
-				if rabbitqm.PublishQueue(rabcount, j) {
-					rabcount++
+			case j := <-natsresults:
+
+				wg := sync.WaitGroup{}
+				wg.Add(1)
+				if nats.Publish(j) {
+					wg.Done()
 					// only enabled
 					if len(gmail.GmailUser) > 0 &&
 						len(gmail.GmailPassword) > 0 &&
@@ -71,6 +73,7 @@ func RbConsumer() {
 						}
 					}
 				}
+				wg.Wait()
 			}
 		}
 	}()

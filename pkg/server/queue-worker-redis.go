@@ -62,7 +62,6 @@ func RdConsumer() {
 					if len(gmail.GmailUser) > 0 &&
 						len(gmail.GmailPassword) > 0 &&
 						len(gmail.EmailNotify) > 0 {
-						// log.Println("save postgres")
 						// rule critical
 						matched, err := regexp.MatchString("#critical#", j)
 						if err != nil {

@@ -10,7 +10,7 @@ package server
 // 	"regexp"
 
 // 	"github.com/jeffotoni/gologs/pkg/gmail"
-// 	//"github.com/jeffotoni/gologs/repo/postgres"
+// 	//"github.com/jeffotoni/gologs/pkg/postgres"
 // 	// "github.com/jeffotoni/gologs/pkg/rabbitqm"
 // 	// "github.com/jeffotoni/gologs/pkg/redis"
 // 	// "github.com/jeffotoni/gologs/pkg/mongo"
