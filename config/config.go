@@ -25,6 +25,9 @@ var DEBUG_REQ int
 // Default postgres
 var SERVICE = os.Getenv("SERVICE")
 
+// NATS PERSISTENT default redis
+var NATS_PERSISTENT = os.Getenv("NATS_PERSISTENT")
+
 func init() {
 
 	// services accept
@@ -52,6 +55,11 @@ func init() {
 		MEMORY, _ = strconv.Atoi(MEMORY_S)
 	} else {
 		MEMORY = 20000
+	}
+
+	// default
+	if len(NATS_PERSISTENT) <= 0 {
+		NATS_PERSISTENT = "redis"
 	}
 
 	// show

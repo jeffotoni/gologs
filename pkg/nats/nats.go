@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/jeffotoni/gologs/pkg/postgres"
+	"github.com/jeffotoni/gologs/pkg/redis"
 	nats "github.com/nats-io/go-nats"
 )
 
@@ -13,6 +14,8 @@ const (
 	Subject = "gologs"
 	limit   = 10000000 // 10millions
 )
+
+var natsCount int
 
 func Publish(jsonStr string) bool {
 
@@ -26,7 +29,7 @@ func Publish(jsonStr string) bool {
 	return true
 }
 
-func SubscribeAsync() {
+func SubscribeAsync(service string) {
 
 	//start := time.Now()
 	chanpg := make(chan string, limit)
@@ -48,8 +51,7 @@ func SubscribeAsync() {
 		if _, err := nc.Subscribe(Subject, func(msg *nats.Msg) {
 			log.Printf("Received message %s\n", string(msg.Data))
 			chanpg <- string(msg.Data)
-			//redis.SaveRedis(count, string(msg.Data))
-			// count++
+			natsCount++
 			wg.Done()
 		}); err != nil {
 			log.Fatal(err)
@@ -64,12 +66,14 @@ func SubscribeAsync() {
 	}()
 	// close(chanpg)
 	//go func() {
-
 	for {
 		select {
 		case cmsgJson := <-chanpg:
-			postgres.Insert5Log(cmsgJson)
+			if service == "postgres" {
+				postgres.Insert5Log(cmsgJson)
+			} else if service == "redis" {
+				redis.SaveRedis(natsCount, cmsgJson)
+			}
 		}
 	}
-
 }

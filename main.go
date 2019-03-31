@@ -11,6 +11,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jeffotoni/gologs/config"
+	"github.com/jeffotoni/gologs/pkg/nats"
 	"github.com/jeffotoni/gologs/pkg/server"
 )
 
@@ -18,13 +20,11 @@ func main() {
 
 	done := make(chan struct{})
 
-	// Receives job
-	// from queue
-	// and executes
-	// go server.WConsumer()
-
-	// consumer
-	// go nats.SubscribeAsync()
+	// only for nats
+	if config.SERVICE == "nats" {
+		go nats.SubscribeAsync(config.NATS_PERSISTENT)
+		//go nats.SubscribeAsync("postgres")
+	}
 
 	// Rpc open
 	go server.Rpc()
