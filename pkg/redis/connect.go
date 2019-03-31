@@ -9,12 +9,15 @@ import (
 	"strconv"
 
 	"github.com/go-redis/redis"
+	"github.com/jeffotoni/gologs/config"
 )
 
 var client *redis.Client
 
 func init() {
-	client = NewClient()
+	if config.SERVICE == "redis" {
+		client = NewClient()
+	}
 }
 
 func NewClient() *redis.Client {

@@ -10,16 +10,8 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/jeffotoni/gologs/config"
 	"github.com/streadway/amqp"
-)
-
-var (
-	uri          = flag.String("uri", "amqp://guest:guest@localhost:5672/", "AMQP URI")
-	exchangeName = flag.String("exchange", "test-exchange", "Durable AMQP exchange name")
-	exchangeType = flag.String("exchange-type", "direct", "Exchange type - direct|fanout|topic|x-custom")
-	//routingKey   = flag.String("key", "test-key", "AMQP routing key")
-	//body     = flag.String("body", "foobar", "Body of message")
-	reliable = flag.Bool("reliable", true, "Wait for the publisher confirmation before exiting")
 )
 
 type MessagingClient struct {
@@ -29,13 +21,15 @@ type MessagingClient struct {
 var ci = &MessagingClient{}
 
 func init() {
-	flag.Parse()
-	ci.ConnectToBroker()
+	if config.SERVICE == "rabbitqm" {
+		flag.Parse()
+		ci.ConnectToBroker()
+	}
 }
 
 func (m *MessagingClient) ConnectToBroker() {
 
-	connectionString := *uri
+	connectionString := RABBI_HOST
 
 	if connectionString == "" {
 		log.Println("Cannot initialize connection to broker, connectionString not set. Have you initialized?")
@@ -91,7 +85,7 @@ func (m *MessagingClient) PublishOnQueue(body []byte) error {
 	return err
 }
 
-func SendV2(key_int int, body string) bool {
+func PublishQueue(key_int int, body string) bool {
 
 	if ci.PublishOnQueue([]byte(body)) != nil {
 		return false
@@ -103,7 +97,7 @@ func SendV2(key_int int, body string) bool {
 func SendV0(key_int int, body string) bool {
 
 	key := strconv.Itoa(key_int)
-	if err := publish(*uri, *exchangeName, *exchangeType, key, body, *reliable); err != nil {
+	if err := publish(RABBI_HOST, RABBI_EXCHANGE_NAME, RABBI_EXCHANGE_TYPE, key, body, RABBI_RELIABLE); err != nil {
 		log.Fatalf("%s", err)
 	}
 	//log.Printf("published %dB OK", len(body))

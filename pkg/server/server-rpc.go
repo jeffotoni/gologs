@@ -10,6 +10,8 @@ import (
 	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
+
+	"github.com/jeffotoni/gologs/config"
 )
 
 var PORT_RPC = ":22334"
@@ -30,7 +32,7 @@ func (t *Receive) Json(args *Args, reply *string) error {
 	*reply = "ok"
 
 	// without goroutine
-	WProducer(args.Json)
+	ServiceProducer(args.Json)
 	return nil
 }
 
@@ -51,7 +53,7 @@ func Rpc() {
 			log.Println("accept error: " + err.Error())
 			return
 		} else {
-			if DEBUG {
+			if config.DEBUG {
 				log.Printf("New connection established in rpc server\n")
 			}
 			// without goroutine

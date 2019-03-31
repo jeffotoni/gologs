@@ -13,6 +13,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/jeffotoni/gologs/config"
+
 	_ "github.com/lib/pq"
 )
 
@@ -72,47 +74,49 @@ var (
 var dbLocal *sql.DB
 
 func init() {
-	if len(os.Getenv("DB_PORT")) <= 0 {
-		DB_PORT = "5432"
-	}
-	if len(os.Getenv("DB_SSL")) <= 0 {
-		DB_SSL = "disable"
-	}
-	if len(os.Getenv("DB_SORCE")) <= 0 {
-		DB_SORCE = "postgres"
-	}
-
-	if len(os.Getenv("DB_NAME")) <= 0 {
-		fmt.Printf("\033[0;31m")
-		println(" Error, export DB_NAME is permited!")
-		fmt.Printf("\033[0;0m")
-		showEnvDb()
-		return
+	if config.SERVICE == "postgres" {
+		if len(os.Getenv("DB_PORT")) <= 0 {
+			DB_PORT = "5432"
+		}
+		if len(os.Getenv("DB_SSL")) <= 0 {
+			DB_SSL = "disable"
+		}
+		if len(os.Getenv("DB_SORCE")) <= 0 {
+			DB_SORCE = "postgres"
+		}
 	}
 
-	if len(os.Getenv("DB_HOST")) <= 0 {
-		fmt.Printf("\033[0;31m")
-		println(" Error, export DB_HOST is permited!")
-		fmt.Printf("\033[0;0m")
-		showEnvDb()
-		return
-	}
+	// if len(os.Getenv("DB_NAME")) <= 0 {
+	// 	fmt.Printf("\033[0;31m")
+	// 	println(" Error, export DB_NAME is permited!")
+	// 	fmt.Printf("\033[0;0m")
+	// 	showEnvDb()
+	// 	return
+	// }
 
-	if len(os.Getenv("DB_USER")) <= 0 {
-		fmt.Printf("\033[0;31m")
-		println(" Error, export DB_USER is permited!")
-		fmt.Printf("\033[0;0m")
-		showEnvDb()
-		return
-	}
+	// if len(os.Getenv("DB_HOST")) <= 0 {
+	// 	fmt.Printf("\033[0;31m")
+	// 	println(" Error, export DB_HOST is permited!")
+	// 	fmt.Printf("\033[0;0m")
+	// 	showEnvDb()
+	// 	return
+	// }
 
-	if len(os.Getenv("DB_PASSWORD")) <= 0 {
-		fmt.Printf("\033[0;31m")
-		println(" Error, export DB_PASSWORD is permited!")
-		println("\033[0m")
-		showEnvDb()
-		return
-	}
+	// if len(os.Getenv("DB_USER")) <= 0 {
+	// 	fmt.Printf("\033[0;31m")
+	// 	println(" Error, export DB_USER is permited!")
+	// 	fmt.Printf("\033[0;0m")
+	// 	showEnvDb()
+	// 	return
+	// }
+
+	// if len(os.Getenv("DB_PASSWORD")) <= 0 {
+	// 	fmt.Printf("\033[0;31m")
+	// 	println(" Error, export DB_PASSWORD is permited!")
+	// 	println("\033[0m")
+	// 	showEnvDb()
+	// 	return
+	// }
 }
 
 func showEnvDb() {

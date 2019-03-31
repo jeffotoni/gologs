@@ -8,6 +8,7 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/jeffotoni/gologs/config"
 	"github.com/streadway/amqp"
 )
 
@@ -34,8 +35,9 @@ func connect() {
 }
 
 func init() {
-
-	connect()
+	if config.SERVICE == "rabbitqm" {
+		connect()
+	}
 
 	// // Get queue connection
 	// queue := drivers.NewQueue()
