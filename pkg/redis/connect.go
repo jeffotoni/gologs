@@ -15,7 +15,7 @@ import (
 var client *redis.Client
 
 func init() {
-	if config.SERVICE == "redis" {
+	if config.SERVICE == config.REDIS {
 		client = NewClient()
 	}
 }

@@ -16,10 +16,12 @@ var (
 	RABBI_HOST     = os.Getenv("RABBI_HOST")
 	RABBI_PORT     = os.Getenv("RABBI_PORT")
 
+	RABBI_PROTOCOLO     = os.Getenv("RABBI_PROTOCOLO")
 	RABBI_EXCHANGE_NAME = os.Getenv("RABBI_EXCHANGE_NAME")
 	RABBI_EXCHANGE_TYPE = os.Getenv("RABBI_EXCHANGE_TYPE")
 	RABBI_RELIABLE_S    = os.Getenv("RABBI_RELIABLE")
 	RABBI_RELIABLE      = true
+	RABBI_DIAL          = ""
 )
 
 // var (
@@ -33,8 +35,16 @@ var (
 
 func init() {
 
+	if len(RABBI_PROTOCOLO) <= 0 {
+		RABBI_PROTOCOLO = "amqp://"
+	}
+
 	if len(RABBI_USER) <= 0 {
 		RABBI_USER = "guest"
+	}
+
+	if len(RABBI_PASSWORD) <= 0 {
+		RABBI_PASSWORD = "guest"
 	}
 
 	if len(RABBI_HOST) <= 0 {
@@ -56,4 +66,6 @@ func init() {
 	if len(RABBI_RELIABLE_S) <= 0 {
 		RABBI_RELIABLE, _ = strconv.ParseBool(RABBI_RELIABLE_S)
 	}
+
+	RABBI_DIAL = RABBI_PROTOCOLO + RABBI_USER + ":" + RABBI_PASSWORD + "@" + RABBI_HOST + ":" + RABBI_PORT + "/"
 }

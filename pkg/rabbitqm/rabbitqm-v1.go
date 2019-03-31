@@ -25,7 +25,8 @@ func failOnError(err error, msg string) {
 }
 
 func connect() {
-	conn, err = amqp.Dial("amqp://guest:guest@localhost:5672/")
+
+	conn, err = amqp.Dial(RABBI_DIAL)
 	if err != nil {
 		log.Println(err)
 		return
@@ -35,7 +36,7 @@ func connect() {
 }
 
 func init() {
-	if config.SERVICE == "rabbitqm" {
+	if config.SERVICE == config.RABBITQM {
 		connect()
 	}
 

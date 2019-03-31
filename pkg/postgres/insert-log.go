@@ -7,8 +7,6 @@ package postgres
 import (
 	"database/sql"
 	"log"
-
-	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
 func InsertLog(jsonMsg string) bool {
@@ -17,9 +15,9 @@ func InsertLog(jsonMsg string) bool {
 		return false
 	}
 
-	var Db = pg.PostDb.Pgdb
+	var Db = PostDb.Pgdb
 	// Db...
-	if interf := pg.Connect(); interf != nil {
+	if interf := Connect(); interf != nil {
 		Db = interf.(*sql.DB)
 	} else {
 		return false

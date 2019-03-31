@@ -17,6 +17,15 @@ var DEBUG_REQ_S = os.Getenv("DEBUG_REQ")
 var DEBUG bool
 var DEBUG_REQ int
 
+const (
+	POSTGRES = "postgres"
+	REDIS    = "redis"
+	RABBITQM = "rabbitqm"
+	MONGO    = "mongo"
+	NATS     = "nats"
+	MAPS     = "maps"
+)
+
 // postgres
 // redis
 // rabbitqm

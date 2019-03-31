@@ -2,7 +2,7 @@
 // @jeffotoni
 // 2019-01-04
 
-package psql
+package postgres
 
 ///
 import (
@@ -74,7 +74,7 @@ var (
 var dbLocal *sql.DB
 
 func init() {
-	if config.SERVICE == "postgres" {
+	if config.SERVICE == config.POSTGRES {
 		if len(os.Getenv("DB_PORT")) <= 0 {
 			DB_PORT = "5432"
 		}

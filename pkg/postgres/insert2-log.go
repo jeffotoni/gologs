@@ -10,8 +10,6 @@ import (
 	"log"
 	"strings"
 	"sync"
-
-	pg "github.com/jeffotoni/gologs/pkg/psql"
 )
 
 func Insert2Log(jsonMsg string) bool {
@@ -27,10 +25,10 @@ func Insert2Log(jsonMsg string) bool {
 	}
 
 	// removendo aspas..
-	pg.DB_NAME = strings.Replace(pg.DB_NAME, `"`, "", -1)
+	DB_NAME = strings.Replace(DB_NAME, `"`, "", -1)
 	DBINFO := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		pg.DB_HOST, pg.DB_PORT, pg.DB_USER, pg.DB_PASSWORD, pg.DB_NAME, pg.DB_SSL)
-	Db, err := sql.Open(pg.DB_SORCE, DBINFO)
+		DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SSL)
+	Db, err := sql.Open(DB_SORCE, DBINFO)
 	if err != nil {
 		log.Println(err.Error())
 		return false

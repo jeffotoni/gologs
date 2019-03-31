@@ -7,6 +7,8 @@ package redis
 import (
 	"os"
 	"strconv"
+
+	"github.com/jeffotoni/gologs/config"
 )
 
 /////// DATA BASE
@@ -19,19 +21,20 @@ var (
 )
 
 func init() {
+	if config.SERVICE == config.REDIS {
+		if len(REDIS_DB_S) <= 0 {
+			REDIS_DB = 0
+		} else {
+			db, _ := strconv.Atoi(REDIS_DB_S)
+			REDIS_DB = db
+		}
 
-	if len(REDIS_DB_S) <= 0 {
-		REDIS_DB = 0
-	} else {
-		db, _ := strconv.Atoi(REDIS_DB_S)
-		REDIS_DB = db
-	}
+		if len(REDIS_HOST) <= 0 {
+			REDIS_HOST = "localhost"
+		}
 
-	if len(REDIS_HOST) <= 0 {
-		REDIS_HOST = "localhost"
-	}
-
-	if len(REDIS_PORT) <= 0 {
-		REDIS_PORT = "6379"
+		if len(REDIS_PORT) <= 0 {
+			REDIS_PORT = "6379"
+		}
 	}
 }
