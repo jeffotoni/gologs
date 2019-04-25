@@ -11,10 +11,15 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/getsentry/raven-go"
 	"github.com/jeffotoni/gologs/config"
 	"github.com/jeffotoni/gologs/pkg/nats"
 	"github.com/jeffotoni/gologs/pkg/server"
 )
+
+func init() {
+	raven.SetDSN(os.Getenv("SET_RAVEN"))
+}
 
 func main() {
 
