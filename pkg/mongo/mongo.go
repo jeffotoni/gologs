@@ -14,23 +14,23 @@ type MsgBroken struct {
 const (
         hosts      = "localhost:27017"
         database   = "gologs"
-        username   = "gologs"
-        password   = "1234#"
+        username   = os.Getevn("MONGO_USER")
+        password   = os.Getevn("MONGO_PASS")
         collection = "messages"
 )
 
 func InsertOne(key int, value string) bool {
 
-        // info := &mgo.DialInfo{
-        //         Addrs:    []string{hosts},
-        //         Timeout:  60 * time.Second,
-        //         Database: database,
-        //         Username: username,
-        //         Password: password,
-        // }
-        // session, err := mgo.DialWithInfo(info)
+        info := &mgo.DialInfo{
+                Addrs:    []string{hosts},
+                Timeout:  60 * time.Second,
+                Database: database,
+                Username: username,
+                Password: password,
+        }
+        session, err := mgo.DialWithInfo(info)
 
-        session, err := mgo.Dial("localhost:27017")
+        //session, err := mgo.Dial("localhost:27017")
         if err != nil {
                 log.Println(err)
                 return false
