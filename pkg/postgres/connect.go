@@ -79,7 +79,7 @@ func init() {
 			DB_PORT = "5432"
 		}
 		if len(os.Getenv("DB_SSL")) <= 0 {
-			DB_SSL = "disable"
+			DB_SSL = "require"
 		}
 		if len(os.Getenv("DB_SORCE")) <= 0 {
 			DB_SORCE = "postgres"

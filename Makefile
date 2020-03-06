@@ -42,7 +42,6 @@ docker:
 	@echo "\033[0;33m################################## build Docker gologs ##################################\033[0m"
 	@docker stop gologs
 	@docker rm gologs
-	@sleep 1
 	@echo "--------------------------------------------------------------------------------------"
 	@echo "\033[0;33m################################## build Docker gologs ##################################\033[0m"
 	@docker build --no-cache -f Dockerfile -t your-regis/gologs .

@@ -1,5 +1,7 @@
 module github.com/jeffotoni/gologs
 
+go 1.14
+
 require (
 	github.com/certifi/gocertifi v0.0.0-20190415143156-92f724a62f3e // indirect
 	github.com/getsentry/raven-go v0.2.0

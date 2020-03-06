@@ -1,6 +1,6 @@
 # tart by building the application.
 # Build em gologs com distroless
-FROM golang:1.12.0 as builder
+FROM golang:1.14 as builder
 
 ## install xz
 RUN apt-get update && apt-get install -y \
